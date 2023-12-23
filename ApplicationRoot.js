@@ -1,6 +1,6 @@
 import { StartScreen } from './StartScreen.js';
 import { dataProvider } from './dataProvider.js';
-import { HeaderContainer } from './headerContainer.js';
+import { HeaderContainer } from './HeaderContainer.js';
 import AlignHelper from './helper/AlignHelper.js';
 import GraphicsHelper from './helper/GraphicsHelper.js';
 import Utils from './helper/Utils.js';
