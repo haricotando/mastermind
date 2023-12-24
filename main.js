@@ -16,6 +16,7 @@ WebFont.load({
   });
 
 function init(){
+    gsap.registerPlugin(PixiPlugin);
     let app = new PIXI.Application({
         background: '#1A1F22',
         // background: '#FF0000',

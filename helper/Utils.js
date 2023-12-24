@@ -21,17 +21,34 @@ class Utils {
     /* ------------------------------------------------------------
         デザインガイドをロードする
     ------------------------------------------------------------ */
-    static loadDesignGuide(path){
+    static loadDesignGuide(path, alignBy){
         const texture = PIXI.Texture.from(path);
         const sprite = new PIXI.Sprite(texture);
         texture.baseTexture.addListener("loaded", (event) => {
             let destSize = this.fitWidth(sprite.width, sprite.height, dataProvider.app.renderer.width);
             sprite.width = destSize[0];
             sprite.height = destSize[1];
+            this.alignBottomWindow(sprite);
         })
-        sprite.anchor.set(0.5);
+        // sprite.anchor.set(0.5);
         return sprite;
     }
+
+    /* ------------------------------------------------------------
+        AlignHelperから一旦統合する
+    ------------------------------------------------------------ */
+    static alignTopWindow(target){
+        target.x = Math.round(window.innerWidth/2 - target.width/2);
+        target.y = 0;
+    }
+    
+    static alignBottomWindow(target){
+        target.x = Math.round(window.innerWidth/2 - target.width/2);
+        target.y = window.innerHeight - target.height;
+    }
+
+
+
 
     /*
         余白あってもいいからいい感じに収めるのと、
@@ -112,8 +129,6 @@ class Utils {
         this._gridLine(gridContainer, 'h', -200);
         this._gridLine(gridContainer, 'h', -400);
 
-        // gridContainer.x = window.innerWidth / 2;
-        // gridContainer.y = window.innerHeight / 2;
         return gridContainer;
     }
 

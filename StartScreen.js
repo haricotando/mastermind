@@ -9,8 +9,6 @@ export class StartScreen extends PIXI.Container {
     ============================================================ */
     constructor() {
         super();
-        const guide = this.addChild(Utils.loadDesignGuide('./guide_btn.png'));
-        guide.alpha = 0.3;
 
         this.initElements();
         this.initBtn();
@@ -162,6 +160,9 @@ export class StartScreen extends PIXI.Container {
         this.startBtn.visible = false;
     }
 
+    /* ------------------------------------------------------------
+        outro
+    ------------------------------------------------------------ */
     outro(){
         this.circleFill.visible = true;
         this.circleFill.alpha = 1;
@@ -175,11 +176,13 @@ export class StartScreen extends PIXI.Container {
             })
             .to(this.circleFill, {alpha:0, duration:0.3})
             .call(() =>{
+                this.parent.initHeader();
                 this.suicide();
             });
             
         // titles
-        gsap.timeline().to(this.titlesContainer.scale, {x:1.1, y:1.1, duration:0.8});
+        gsap.to(this.titlesContainer, {y:this.titlesContainer.y - 400, duration:0.3});
+        gsap.timeline().to(this.titlesContainer.scale, {x:0.8, y:0.8, duration:0.8});
         gsap.timeline().to(this.titlesContainer, {alpha:0.7, duration:0.8});
         //
         this.styleLabel.fill = dataProvider.data.colorDark;
@@ -256,6 +259,9 @@ export class StartScreen extends PIXI.Container {
     }
 
     introC(){
+        this.titlesMask.visible = false;
+        this.titlesContainer.mask = null;
+        //
         this.startBtn.visible = true;
         this.circleLine.alpha = 0;
         this.circleLine.scale.set(0.6);

@@ -3,7 +3,7 @@ export const dataProvider = {
     data: {
         // debug: true,
         // answerLock: true,
-        skipIntro: false,
+        skipIntro: true,
         secret: '',
         lastGuess: '',
         currentAttempt: 0,
@@ -20,6 +20,7 @@ export const dataProvider = {
         colorEmph2: 0xFFFF00,
         colorEmph3: 0xFF00FF,
     },
+    baseStyle: {},
 };
 
 

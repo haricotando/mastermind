@@ -49,6 +49,11 @@ class AlignHelper {
     static bottomWindow(target){
         target.y = window.innerHeight;
     }
+
+    static topWindow(target){
+        target.y = 0;
+        this.horizontalCenterWindow(target);
+    }
     // static horizontalCenter(parent, target){
     //     let parentWidth = parent == window ? window.innerWidth : parent.width;
     //     target.x = Math.round((parentWidth - target.width) / 2);
