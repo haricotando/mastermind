@@ -2,13 +2,14 @@ export const dataProvider = {
     app: undefined,
     data: {
         // debug: true,
-        // answerLock: true,
+        answerLock: true,
         skipIntro: true,
         secret: '',
         lastGuess: '',
         currentAttempt: 0,
-        attemptMax: 10,
+        attemptMax: 1,
         offsetY: -20,
+        headerOffset: 235,
 
         // colorDark: 0x666666,
         colorDark: 0x1A1F22,
@@ -21,8 +22,8 @@ export const dataProvider = {
         colorEmph3: 0xFF00FF,
     },
     baseStyle: {},
+    colorMatrixFilterEmph:[],
 };
-
 
 /*
 

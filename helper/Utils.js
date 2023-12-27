@@ -5,6 +5,27 @@ class Utils {
         console.log('hello');
     }
 
+
+    /*
+        Utils.initTrace(this);
+        Utils.trace(val);
+    */
+    static _appRoot = 0;
+    static _traceText;
+    static initTrace(appRoot){
+        this._appRoot = appRoot;
+        this._appRoot.sortableChildren = true;
+        this._traceText = this._appRoot.addChild(new PIXI.Text('', {fontSize:50, fill:0xFFFFFF}));
+        this._traceText.anchor.set(0.5);
+        this._traceText.x = window.innerWidth/2;
+        this._traceText.y = window.innerHeight/2;
+    }
+
+    static put(val){
+        this._traceText.zIndex =1000;
+        this._traceText.text = val;
+        this._appRoot.sortChildren();
+    }
     /* ------------------------------------------------------------
         TextStyle複製
     ------------------------------------------------------------ */
