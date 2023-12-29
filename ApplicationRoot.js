@@ -18,13 +18,12 @@ export class ApplicationRoot extends PIXI.Container {
     ============================================================ */
     constructor(appScreen) {
         super();
+        this.init();
+    }
 
+    init(){
         this.generateSecretCode();
 
-        const grid = this.addChild(GraphicsHelper.drawGrid());
-        grid.alpha = 0.2;
-
-        
         // PRESET作る
         dataProvider.baseStyle = new PIXI.TextStyle({
             fontFamily: 'Inter', fontSize: 100, fontWeight: 100, fill: dataProvider.data.colorLight,
@@ -42,37 +41,40 @@ export class ApplicationRoot extends PIXI.Container {
         colorMtxEmph3.tint(dataProvider.data.colorEmph3);
         dataProvider.colorMatrixFilterEmph.push(colorMtxEmph3);
         
-        // DEBUG
+        /* 
+            DEBUG starts
+        */
+        const grid = this.addChild(GraphicsHelper.drawGrid());
+        grid.alpha = 0;
         Utils.initTrace(this);
-
-        //
+        
         if(dataProvider.data.skipIntro){
+            // this.initStartScreen();
             this.initAttempt();
             this.initHeader();
             this.initInput();
-            
-        }else{
-            this.initStartScreen();
+            return false;
         }
-        
-        gsap.delayedCall(0.2, ()=>{
-            // this.gameOver();
-        });
-        
         // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_gameover.png', 'bottom'));
         // guide.alpha = 0.25;
+        gsap.delayedCall(1.5, ()=>{
+            // this.gameOver();
+            // dataProvider.data.lastGuess = 1234;
+            // this.guessMatch();
+        });
+        /* 
+            DEBUG ends
+        */
 
+        this.initStartScreen();
+        
+        
     }
 
     /* ------------------------------------------------------------
         イントロ
     ------------------------------------------------------------ */
     initStartScreen(){
-        // introスキップフラグ時はaddしない
-        if(dataProvider.data.skipIntro){
-            return false;
-        }
-
         let startScreen = new StartScreen();
         this.addChild(startScreen);
         AlignHelper.centerWindow(startScreen);
@@ -107,6 +109,16 @@ export class ApplicationRoot extends PIXI.Container {
     gameOver(){
         this.endScreen = this.addChild(new GameOverScreen());
         AlignHelper.centerWindow(this.endScreen);
+    }
+
+    restart(){
+        this.removeChild(this.headerContainer);
+        this.removeChild(this.attemptContainer);
+        this.removeChild(this.inputContainer);
+        this.generateSecretCode();
+        this.initAttempt();
+        this.initHeader();
+        this.initInput();
     }
 
     updateAttempt(){

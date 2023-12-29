@@ -15,40 +15,53 @@ export class InputContainer extends PIXI.Container {
         this.keyPadList = [];
         this.padMargin = 25;
         this.padSize = 170;
-        this.guessTextBaseY = 0;
-
 
         this.initKeyPads();
-        this.initGuess();
-
+        this.initBuffer();
         this.intro();
 
-        // gsap.delayedCall(0.2, ()=>{
-        //    this.submitAndReset(true);
+        // debug
+        // gsap.delayedCall(0.3, ()=>{
+        //     this.onKeyPadHandler(0)
+        // });
+        // gsap.delayedCall(0.6, ()=>{
+        //     this.onKeyPadHandler(2)
+        // });
+        // gsap.delayedCall(0.9, ()=>{
+        //     this.onKeyPadHandler(3)
+        // });
+        // gsap.delayedCall(1.2, ()=>{
+        //     this.onKeyPadHandler(4)
         // });
     }
 
+    /* ------------------------------------------------------------
+        intro
+    ------------------------------------------------------------ */
     intro(){
         this.keyPadContainer.visible = true;
-        gsap.from(this.keyPadContainer, {alpha:0, duration:0.4, ease:'sine.out'});
-        gsap.from(this.keyPadContainer.scale, {x:0.6, y:0.6, duration:0.45, ease:'back.out(1)', delay:0.1})
-        gsap.from(this.keyPadContainer, {y:window.innerHeight + this.keyPadContainer.height, duration:0.5, ease:'back.out(1)'});
+        gsap.set(this.keyPadContainer, {alpha:0, y:window.innerHeight + this.keyPadContainer.height});
+        gsap.set(this.keyPadContainer.scale, {x:0.5, y:0.5});
+        gsap.to(this.keyPadContainer, {alpha:1, duration:0.5, ease:'none'});
+        gsap.to(this.keyPadContainer, {y:this.keyPadContainer.orgY, duration:0.5, ease:'back.out(1)'});
+        gsap.to(this.keyPadContainer.scale, {x:1, y:1, duration:0.4, ease:'back.out(1)', delay:0.1});
 
-        this.guessText.visible = true;
-        gsap.timeline()
-            .set(this.guessText, {alpha:0})
-            .set(this.guessText.scale, {x:0.5, y:0.5})
-            .to(this.guessText, {alpha:1, duration:0.3, delay:0.1})
-            .to(this.guessText.scale, {x:1, y:1, duration:0.3, ease:'back.out(3)'}, '-=0.1')
-        gsap.timeline()
-            .set(this.guessText.style, {letterSpacing:-50})
-            .to(this.guessText.style, {letterSpacing: 0, duration:0.3, delay:0.1});
+        // const guess
+        const bufferIntroDelay = 0.3;
+        this.buffer.visible = true;
+        gsap.set(this.buffer, {alpha:0, y:this.buffer.orgY+100});
+        gsap.set(this.buffer.scale, {x:0.5, y:0.5})
+
+        gsap.to(this.buffer, {alpha:1, duration:0.5, ease:'none', delay:bufferIntroDelay})
+        gsap.to(this.buffer, {y:this.buffer.orgY, duration:0.35, ease:'back.out(3)', delay:bufferIntroDelay})
+        gsap.to(this.buffer.scale, {x:1, y:1, duration:0.3, ease:'back.out(3)', delay:bufferIntroDelay})
+        gsap.set(this.buffer.style, {letterSpacing:-50})
+        gsap.to(this.buffer.style, {letterSpacing: 0, duration:0.3, delay:0.1});
     }
     /* ------------------------------------------------------------
         Keypad
     ------------------------------------------------------------ */
     initKeyPads(){
-
         this.keyPadContainer = new PIXI.Container();
         this.addChild(this.keyPadContainer);
 
@@ -70,219 +83,193 @@ export class InputContainer extends PIXI.Container {
         }
 
         Utils.pivotX(this.keyPadContainer);
-        this.keyPadContainer.y = window.innerHeight - this.keyPadContainer.height-(window.innerHeight/20)
+        this.keyPadContainer.orgY = window.innerHeight - this.keyPadContainer.height-(window.innerHeight/20);
+        this.keyPadContainer.y = this.keyPadContainer.orgY;
         this.keyPadContainer.visible = false;
     }
 
     /* ------------------------------------------------------------
-        Guess / Submit / Delete
+        Buffer / Submit / Delete
     ------------------------------------------------------------ */
-    initGuess(){
-        this.guessText = this.addChild(new PIXI.Text('****', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 200, letterSpacing: 0, fill:dataProvider.data.colorLight})));
+    initBuffer(){
+        this.buffer = this.addChild(new PIXI.Text('****', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 200, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         // this.guess.tint = dataProvider.data.colorLight;
-        this.guessText.anchor.set(0.5);
-        this.guessTextBaseY = this.keyPadContainer.y - window.innerHeight / 11;
-        this.guessText.y = this.guessTextBaseY;
-        this.guessText.visible = false;
+        this.buffer.anchor.set(0.5);
+        this.buffer.orgY = this.keyPadContainer.y - window.innerHeight / 13;
+        this.buffer.y = this.buffer.orgY;
+        this.buffer.visible = false;
 
         // ===== submit =====
         this.submitBtn = this.addChild(new PIXI.Sprite());
         //
-        let submitCircleFill = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, false, true));
-        submitCircleFill.tint = dataProvider.data.colorDark;
-        let submitCircleLine = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:2}));
+        this.submitCircleFill = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, false, true));
+        this.submitCircleFill.tint = dataProvider.data.colorDark;
+        this.submitCircleLine = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:2}));
         //
         this.submitLabel = this.submitBtn.addChild(new PIXI.Text('↑', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 300, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         this.submitLabel.anchor.set(0.5);
         
-        this.submitBtn.y = this.rect.y + this.rect.height/2.8;
+        this.submitBtn.orgY = this.rect.y + this.rect.height/2.8;
+        this.submitBtn.y = this.submitBtn.orgY;
         this.submitBtn.x = window.innerWidth/4.1;
         
-        this.submitBtn.interactive = true;
         this.submitBtn.visible = false;
         
         // ===== delete =====
         this.deleteBtn = this.addChild(new PIXI.Sprite());
         //
-        let deleteCircleFill = this.deleteBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, false, true));
-        deleteCircleFill.tint = dataProvider.data.colorDark;
-        let deleteCircleLine = this.deleteBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:2}));
-        deleteCircleLine.tint = dataProvider.data.colorLight;
+        this.deleteCircleFill = this.deleteBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, false, true));
+        this.deleteCircleFill.tint = dataProvider.data.colorDark;
+        this.deleteCircleLine = this.deleteBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:2}));
+        this.deleteCircleLine.tint = dataProvider.data.colorLight;
         //
         this.deleteLabel = this.deleteBtn.addChild(new PIXI.Text('X', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 300, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         this.deleteLabel.anchor.set(0.5);
         
-        this.deleteBtn.y = this.rect.y + this.rect.height/2.8;
+        this.deleteBtn.orgY = this.rect.y + this.rect.height/2.8;
+        this.deleteBtn.y = this.deleteBtn.orgY;
         this.deleteBtn.x = 0 - window.innerWidth/4.1;
         
-        this.deleteBtn.interactive = true;
         this.deleteBtn.visible = false;
 
-        // // ===== Submit touch event =====
+        /*
+            ===== Submit touch event =====
+        */
         this.submitBtn.on('touchstart', (event) => {
-            this.submitBtn.interactive = false;
-            this.subDelHander(true);
-            dataProvider.data.currentAttempt ++;
             this.parent.headerContainer.updateAttempt();
+            this.subDelOutro('submit', 'delete');
+            
+            let result = this.validGuess();
+            this.parent.attemptContainer.addAttempt(this.currentGuess, result, result == 'No match' ? 1 : 0);
+            if(result == 'Match'){
+                this.submitAndReset(true);
+                gsap.delayedCall(0.1, ()=>{
+                    this.parent.guessMatch();
+                    return false;
+                });
+            }else{
+                if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
+                    this.submitAndReset(true);
+                    gsap.delayedCall(0.1, ()=>{
+                        this.parent.gameOver();
+                        return false;
+                    });
+                }else{
+                    this.submitAndReset();
+                }
+            }
         });
         
         // // ===== Delete touch event =====
         this.deleteBtn.on('touchstart', (event) => {
-            this.deleteBtn.interactive = false;
-            this.subDelHander(false);
+            this.subDelOutro('delete', 'submit');
+            gsap.timeline()
+                .to(this.buffer, {x:-50, duration:0.05})
+                .call(()=> { this.buffer.text = '****'; })
+                .to(this.buffer, {x:50, duration:0.05})
+                .to(this.buffer, {x:0, duration:0.05})
+            gsap.timeline()
+                .set(this.buffer.style, {letterSpacing: 100})
+                .to(this.buffer.style, {letterSpacing:0, duration:0.2})
+                .call(()=>{this.resetKeyPads();})
         });
-    }
-
-    /* ------------------------------------------------------------
-        0-9 Keypads
-    ------------------------------------------------------------ */
-    onKeyPadHandler(number){
-        if(this.currentGuess.length < 4){
-            this.currentGuess += number;
-            if(this.currentGuess.length == 4){
-                for(let i=0; i<10; i++){
-                    this.keyPadList[i].mute();
-                }
-                gsap.to(this.keyPadContainer, {alpha:0, duration:0.2});
-                gsap.to(this.keyPadContainer.scale, {x:0.9, y:0.9, duration:0.2});
-                this.activateSubDelBtn(this.deleteBtn, false);
-                this.activateSubDelBtn(this.submitBtn, true);
-                // this.activateSubDelBtn(this.submitBtn, 300, true);
-            }
-        }
-        let output = '';
-        for(let i=0; i<4; i++){
-            output += this.currentGuess[i] === undefined ? '*' : this.currentGuess[i];
-        }
-
-        this.guessText.text = output;
-
-        // let animation = gsap.getById("guessText");
-        // if (animation) {
-        //   animation.kill();
-        // }
-
-        gsap.timeline()
-            .set(this.guessText, {y: this.guessTextBaseY+75, duration:1})
-            .to(this.guessText, {y: this.guessTextBaseY, duration:1, ease: 'elastic.out(1,0.3)'})
-
-        gsap.timeline()
-            .set(this.guessText.style, {letterSpacing: -50})
-            .to(this.guessText.style, {letterSpacing: 0, duration:0.75, ease: 'elastic.out(1,0.3)'})
     }
 
     /* ------------------------------------------------------------
         Show Submit / Delete
     ------------------------------------------------------------ */
-    activateSubDelBtn(target, withDelay){
-        target.interactive = false;
-        target.visible = true;
-        target.alpha = 1;
-        target.scale.set(1);
-        const delayTime = withDelay ? 0.1 : 0;
-        gsap.from(target.scale, {x:0.1, y:0.1, duration:0.6, ease:'expo', delay:delayTime});
-        gsap.timeline().from(target, {y:target.y + 600, duration:0.3, ease:'back.out(1)', delay:delayTime})
+    activateSubDelBtn(targetPrefix, withDelay){
+        const targetBtn = this[targetPrefix + 'Btn'];
+        const targetCircleFill = this[targetPrefix + 'CircleFill'];
+        const targetCircleLine = this[targetPrefix + 'CircleLine'];
+        const targetLabel = this[targetPrefix + 'Label'];
+        
+        targetBtn.interactive = false;
+        targetBtn.visible = true;
+
+        targetCircleLine.alpha = 1;
+        targetCircleLine.tint = dataProvider.data.colorLight;
+        targetCircleLine.scale.set(1);
+        targetCircleFill.tint = dataProvider.data.colorDark;
+        targetCircleFill.scale.set(1);
+        targetLabel.tint = dataProvider.data.colorLight;
+
+        targetLabel.scale.set(1);
+        const baseDelay = 0.2;
+        const delayTime = withDelay ? baseDelay+0.1 : baseDelay+0;
+        gsap.timeline()
+            .set(targetBtn, {alpha:0})
+            .to(targetBtn, {alpha:1, duration:0.4, ease:'nine', delay:delayTime})
+        gsap.timeline()
+            .set(targetBtn.scale, {x:0.1, y:0.1})
+            .to(targetBtn.scale, {x:1, y:1, duration:0.3, ease:'back.out(1)', delay:delayTime})
             .call(()=>{
-                target.interactive = true;
+                targetBtn.interactive = true;
             });
     }
 
    /* ------------------------------------------------------------
         Submit / Delete
     ------------------------------------------------------------ */
-    subDelHander(isSubmit){
-        let target1 = isSubmit ? this.submitBtn : this.deleteBtn;
-        let target2 = isSubmit ? this.deleteBtn : this.submitBtn;
-        // target1.scale.set(1.3);
-        gsap.to(target1.scale, {x:0.8, y:0.8, duration:0.2, ease:'back.in(3)'});
-        gsap.to(target2, {alpha:0, duration:0.1, ease:'none'});
-        gsap.timeline().to(target1, {alpha:0, duration:0.2})
-            .call(() =>{
-                target1.visible = false;
-                target2.visible = false;
-                if(!isSubmit){
-                    this.resetKeyPads();
-                }
-            });
+    subDelOutro(targetPrefix1, targetPrefix2){
+        const targetBtn1 = this[targetPrefix1 + 'Btn'];
+        const targetCircleFill1 = this[targetPrefix1 + 'CircleFill'];
+        const targetCircleLine1 = this[targetPrefix1 + 'CircleLine'];
+        const targetLabel1 = this[targetPrefix1 + 'Label'];
 
-        if(isSubmit){
-        //     // if submit
-            dataProvider.data.lastGuess = this.currentGuess;
-            let result = this.validGuess();
-            // console.log(result);
-        //     console.log('attemp: ' + dataProvider.data.currentAttempt + ' / ' + dataProvider.data.attemptMax);
-            switch (result) {
-                case 'Match':
-                    this.submitAndReset(true);
-        //             this.parent.attemptContainer.addAttempt(this.currentGuess, 'Match!', 2);
-        //             this.parent.endGame(true);
-        //             this.submitAndReset(true);
-                    break;
-                case 'No match':
-                    gsap.delayedCall(0.2, ()=>{
-                        this.parent.attemptContainer.addAttempt(this.currentGuess, result, 1);
-                    });
-        //             this.parent.attemptContainer.addAttempt(this.currentGuess, result, 1);
-        //             if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
-        //                 this.parent.endGame(false);
-        //                 this.submitAndReset(true);
-        //                 return false;
-        //             }
-                    this.submitAndReset();
-                    break;
-                default:
-                    gsap.delayedCall(0.2, ()=>{
-                        this.parent.attemptContainer.addAttempt(this.currentGuess, result, 0);
-                    });
-        //             if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
-        // //                 this.parent.endGame(false);
-        //                     // this.visible = false;
-        //             }
-                    // this.submitAndReset(true);
-                    this.submitAndReset();
-                    break;
-            }
+        const targetBtn2 = this[targetPrefix2 + 'Btn'];
+        const targetCircleFill2 = this[targetPrefix2 + 'CircleFill'];
+        const targetCircleLine2 = this[targetPrefix2 + 'CircleLine'];
+        const targetLabel2 = this[targetPrefix2 + 'Label'];
 
-            if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
-                this.parent.gameOver();
-            }
-                        
-        }else{
-        //     // if delete
-            gsap.timeline()
-                .to(this.guessText, {x:-50, duration:0.05})
-                .call(()=> { this.guessText.text = '****'; })
-                .to(this.guessText, {x:50, duration:0.05})
-                .to(this.guessText, {x:0, duration:0.05})
-            this.guessText.style.letterSpacing = 100;
-            gsap.timeline().to(this.guessText.style, {letterSpacing:0, duration:0.2});
-        //     this.currentGuess = '';
-        }
+        targetBtn1.interactive = false;
+        targetBtn2.interactive = false;
+
+        targetCircleFill1.tint = dataProvider.data.colorLight;
+        targetLabel1.tint = dataProvider.data.colorDark;
+        targetCircleLine1.tint = targetPrefix1 == 'submit' ? dataProvider.data.colorEmph1 : dataProvider.data.colorEmph3;
+
+        gsap.to(targetBtn1, {alpha:0, duration:0.2, ease:'none', delay:0.2});
+
+        gsap.set(targetCircleFill1.scale, {x:1, y:1});
+        gsap.timeline()
+            .to(targetCircleFill1.scale, {x:1.2, y:1.2, duration:0.2, ease:'expo'})
+            .to(targetCircleFill1.scale, {x:0.6, y:0.6, duration:0.3, ease:'back.out(1)'});
+        
+        gsap.to(targetCircleLine1.scale, {x:1.3, y:1.3, duration:0.3, ease:'back.out(1)'});
+        gsap.to(targetCircleLine1, {alpha:0, duration:0.2, ease:'none', delay:0.1});
+
+        gsap.set(targetLabel1.scale, {x:0.9, y:0.9});
+        gsap.to(targetLabel1.scale, {x:1.2, y:1.2, duration:0.3, ease:'back.out(3)'})
+
+        gsap.set(targetBtn2, {alpha:1})
+        gsap.to(targetBtn2.scale, {x:0.8, y:0.8, duration:0.3, ease:'none'})
+        gsap.to(targetBtn2, {alpha:0, duration:0.3, ease:'none'})
+
     }
 
     /* ------------------------------------------------------------
         Submit guess
     ------------------------------------------------------------ */
-    submitAndReset(isMatch){
-        gsap.killTweensOf(this.guessText);
-        gsap.to(this.guessText.scale, {x:0.85, y:0.85, duration:0.2});
+    submitAndReset(withoutReset){
+        gsap.killTweensOf(this.buffer);
+        gsap.to(this.buffer.scale, {x:0.85, y:0.85, duration:0.2});
 
-        if(isMatch){
+        if(withoutReset){
             gsap.timeline()
-                .to(this.guessText, {alpha:0, y:this.guessTextBaseY - 400, duration:0.2, ease:'back.in(1)'})
-                this.parent.guessMatch();
+                .to(this.buffer, {alpha:0, y:this.buffer.orgY - 400, duration:0.2, ease:'back.in(1)'})
         }else{
             gsap.timeline()
-                .to(this.guessText, {alpha:0, y:this.guessTextBaseY - 400, duration:0.2, ease:'back.in(1)'})
+                .to(this.buffer, {alpha:0, y:this.buffer.orgY - 400, duration:0.2, ease:'back.in(1)'})
                 .call(() => {
-                    this.guessText.text= '****';
-                    gsap.set(this.guessText.style, {letterSpacing:-50})
-                    gsap.to(this.guessText.style, {letterSpacing:0, duration:0, ease:'back.out(3)'})
+                    this.buffer.text= '****';
+                    gsap.set(this.buffer.style, {letterSpacing:-50})
+                    gsap.to(this.buffer.style, {letterSpacing:0, duration:0, ease:'back.out(3)'})
                     
-                    gsap.set(this.guessText, {alpha:1});
-                    this.guessText.y = this.guessTextBaseY + 400;
+                    gsap.set(this.buffer, {alpha:1});
+                    this.buffer.y = this.buffer.orgY + 400;
                 })
-                .to(this.guessText, {y: this.guessTextBaseY, duration:0.2, ease:'back.out(3)'})
+                .to(this.buffer, {y: this.buffer.orgY, duration:0.2, ease:'back.out(3)'})
                 .call(()=> {
                     this.resetKeyPads();
                 });
@@ -290,7 +277,12 @@ export class InputContainer extends PIXI.Container {
 
     }
 
+    /* ------------------------------------------------------------
+        Valid
+    ------------------------------------------------------------ */
     validGuess(){
+        dataProvider.data.lastGuess = this.currentGuess;
+
         if(dataProvider.data.answerLock){
             dataProvider.data.secret = '1234';
         }
@@ -323,6 +315,39 @@ export class InputContainer extends PIXI.Container {
         }
     }
 
+   /* ------------------------------------------------------------
+        0-9 Keypads
+    ------------------------------------------------------------ */
+    onKeyPadHandler(number){
+        if(this.currentGuess.length < 4){
+            this.currentGuess += number;
+        }
+        let output = '';
+        for(let i=0; i<4; i++){
+            output += this.currentGuess[i] === undefined ? '*' : this.currentGuess[i];
+        }
+        this.buffer.text = output;
+
+        gsap.timeline()
+            .set(this.buffer, {y: this.buffer.orgY+75, duration:1})
+            .to(this.buffer, {y: this.buffer.orgY, duration:1, ease: 'elastic.out(1,0.3)'})
+
+        gsap.timeline()
+            .set(this.buffer.style, {letterSpacing: -50})
+            .to(this.buffer.style, {letterSpacing: 0, duration:0.75, ease: 'elastic.out(1,0.3)'})
+
+        if(this.currentGuess.length == 4){
+            for(let i=0; i<10; i++){
+                this.keyPadList[i].mute();
+            }
+            gsap.to(this.keyPadContainer, {alpha:0, duration:0.2});
+            gsap.to(this.keyPadContainer.scale, {x:0.9, y:0.9, duration:0.2});
+
+            this.activateSubDelBtn('delete', false);
+            this.activateSubDelBtn('submit', 300, true);
+        }
+    }
+
   /* ------------------------------------------------------------
         KeyPadsの再活性
     ------------------------------------------------------------ */
@@ -332,8 +357,8 @@ export class InputContainer extends PIXI.Container {
         }
         this.keyPadContainer.visible = true;
         gsap.to(this.keyPadContainer, {alpha:1, duration:0.2});
-        // gsap.to(this.keyPadContainer, {y:this.keyPadContainerBasePosY, duration:0.2, ease:'back'});
-        // gsap.to(this.keyPadContainer.scale, {x:1, y:1, duration:0.25, ease:'back'});
+        gsap.to(this.keyPadContainer, {y:this.keyPadContainer.orgY, duration:0.2, ease:'back'});
+        gsap.to(this.keyPadContainer.scale, {x:1, y:1, duration:0.25, ease:'back'});
         this.currentGuess = '';
     }
 

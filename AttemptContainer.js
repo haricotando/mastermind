@@ -30,16 +30,10 @@ export class AttemptContainer extends PIXI.Container {
             this['attempt' + i].y = posYCount * posYMargin + posYStart;
             this['attempt' + i].attemptNumber = i+1;
             posYCount += i % 2 === 0 ? 0 : 1;
-
-            // let keyPad = this.keyPadContainer.addChild(new KeyPad(i==9?0:i+1));
-
-            // keyPad.x = i*(this.padSize + this.padMargin);
-            // if(i>4){
-            //     keyPad.y = this.padSize + this.padMargin;
-            //     keyPad.x = (i-5)*(this.padSize + this.padMargin);
-            // }
-            // this.keyPadList.push(keyPad);
         }
+
+        // gsap.set(this, {alpha:0});
+        // gsap.to(this, {alpha:1, duration:0.3, ease:'none', delay:0.5})
     }
 
     /* ------------------------------------------------------------

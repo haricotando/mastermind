@@ -7,14 +7,16 @@ export class StartScreen extends PIXI.Container {
     /* ============================================================
         constructor
     ============================================================ */
-    constructor() {
+    constructor(bForceSkip) {
         super();
 
         this.initElements();
         this.initBtn();
         this.introA();
-        // this.introB();
-        // this.introC();
+
+        // DEBUG start
+        // this.startBtn.visible = true;
+        // this.outro();
     }
 
     /* ------------------------------------------------------------
@@ -42,7 +44,6 @@ export class StartScreen extends PIXI.Container {
         this.mindV = new PIXI.Text('MIND', Utils.cloneTextStyle(this.masterV.style, {fontWeight: 100}));
         this.titleMastermindV.addChild(this.mindV);
         this.mindV.y += this.masterV.height;
-
         Utils.pivotCenter(this.titleMastermindV);
 
         // ===== MASTERMIND V MASK =====
@@ -71,7 +72,6 @@ export class StartScreen extends PIXI.Container {
         // this.lineRight.x = -415;
         // this.lineRight.height = 680;
         // this.lineRight.y = 35;
-
 
         // ===== MASTER MIND =====
         this.titlesContainer = this.introContainer.addChild(new PIXI.Container());
@@ -103,18 +103,13 @@ export class StartScreen extends PIXI.Container {
         inst2Right.x = inst2Left.width + 15;
         Utils.pivotX(inst2Holder);
         inst2Holder.y = 540;
-
         Utils.pivotY(this.titlesContainer);
         
         // ===== titlesMask =====
-        
         this.titlesMask = this.introContainer.addChild(GraphicsHelper.exDrawRect(0, 0, 415*2, this.titlesContainer.height, false, {color:0xFFFFFF}));
         Utils.pivotCenter(this.titlesMask);
         this.titlesContainer.mask = this.titlesMask;
 
-        //
-        // this.introContainer.y -= dataProvider.app.renderer.height / 20;
-        //
         this.titleM.visible = false;
         this.titleMM.visible = false;
         this.titleMastermindV.visible = false;
@@ -131,7 +126,6 @@ export class StartScreen extends PIXI.Container {
         this.addChild(this.startBtn);
 
         this.startBtn.y = window.innerHeight/4;
-        // this.startBtn.y = dataProvider.app.renderer.height/2 - dataProvider.app.renderer.height/6;
         
         // ===== Circle =====
         let radius = 165;
@@ -144,13 +138,7 @@ export class StartScreen extends PIXI.Container {
         this.startBtn.addChild(this.circleLine);
         
         // ===== Label =====
-        this.styleLabel = new PIXI.TextStyle({
-            fontFamily:     'Inter',
-            fontSize:       180,
-            fontWeight:     200,
-            fill:           dataProvider.data.colorLight,
-        });
-        this.btnLabel = new PIXI.Text('↓', this.styleLabel);
+        this.btnLabel = new PIXI.Text('↓', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 180, fontWeight: 200}));
         this.btnLabel.anchor.set(0.5);
         this.startBtn.addChild(this.btnLabel);
 
@@ -175,12 +163,6 @@ export class StartScreen extends PIXI.Container {
         this.titleMastermindV.alpha = 0;
         this.titleMastermindV.visible = true;
 
-        // let delayInterval = 0.2;
-        // gsap.delayedCall(delayInterval, ()=>{
-        //     this.titleMM.scale.x = 1.5;
-        //     this.titleMM.filters = [colorMtxEmph1];
-        // })
-        
         gsap.timeline()
             .to(this.titleM, {alpha:0, duration:0.5})
             .to(this.titleM, {alpha:1, duration:0.1, repeat:1})
@@ -203,7 +185,6 @@ export class StartScreen extends PIXI.Container {
             .to(this.titleMM, {alpha:0, duration:0.1})
             .to(this.titleMastermindV, {alpha:1, duration:0.1})
             .call(()=>{
-                // this.titleMM.filters = [dataProvider.colorMatrixFilterEmph[0]];
                 this.titleMastermindV.filters = false;
             })
             .to(this.titleMastermindV.scale, {y:1, duration:0.3, ease:'expo'}, '-=0.1')
@@ -244,35 +225,28 @@ export class StartScreen extends PIXI.Container {
         this.titlesContainer.alpha = 0;
         this.titlesContainer.visible = true;
         this.titlesContainer.scale.set(0.7);
-        // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[2]];
+        // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
         
 
-        gsap.timeline().to(this.titlesContainer, {alpha:1, duration:0.4})
-            .call(()=>{
-                // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
-            })
-            .to(this.titlesContainer, {alpha:1, duration:0.1})
-            .call(()=>{
-                // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[1]];
-                this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[2]];
-                this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[2]];
-            })
-            .to(this.titlesContainer, {alpha:1, duration:0.1})
-            .call(()=>{
-                // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
-                this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[1]];
-                this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[1]];
-            })
-            .to(this.titlesContainer, {alpha:1, duration:0.1})
-            .call(()=>{
-                this.titlesContainer.filters = false;
-                this.lineLeft.filters = false;
-                this.lineRight.filters = false;
-                // this.titlesContainer.alpha= 0.1;
-            })
-            // .to(this.titlesContainer, {alpha:0.5, duration:0.1, repeat:2})
-            // .to(this.titlesContainer, {alpha:1, duration:0.1})
-            
+
+        gsap.timeline().to(this.titlesContainer, {alpha:1, duration:0.3, delay:0.3});
+        let fxDelay = 0.3;
+        let fxInterval = 0.1;
+        gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
+            this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[1]];
+        });
+        gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
+            this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
+            this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[0]];
+            this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[0]];
+        });
+        gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
+            this.titlesContainer.filters = false;
+            this.lineLeft.filters = false;
+            this.lineRight.filters = false;
+        });
 
         gsap.timeline().to(this.titlesContainer.scale, {x:1, y:1, duration:openingDuration, ease:'power3.out'})
             .call(() =>{
@@ -288,8 +262,8 @@ export class StartScreen extends PIXI.Container {
         this.startBtn.visible = true;
         this.circleLine.alpha = 0;
         this.circleLine.scale.set(0.6);
-        gsap.to(this.circleLine, {alpha:1, duration:0.5, ease:'power3.out'});
-        gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.7, ease:'power3.out'});
+        gsap.to(this.circleLine, {alpha:1, duration:0.5, ease:'power1.out'});
+        gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.5, ease:'back.out(3)'});
         //
         this.btnLabel.alpha = 0;
         this.btnLabel.y = -40;
@@ -306,20 +280,18 @@ export class StartScreen extends PIXI.Container {
     outro(){
         this.circleFill.visible = true;
         this.circleFill.alpha = 1;
-        let scaleDest = 11;
+        let scaleDest = 10;
 
-        gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.5})
-        gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.5}, '+=0.05')
+        gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
+        gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')
             .call(() => {
                 this.titlesContainer.visible = false;
                 this.lineLeft.visible = false;
                 this.lineRight.visible = false;
-            })
-            .to(this.circleFill, {y:0-this.circleFill.height*10, duration:0.5})
-            // .to(this.circleFill, {alpha:0, duration:0.3})
-            .call(() =>{
-                
                 this.parent.afterIntro();
+            })
+            .to(this.circleFill, {y:0-this.circleFill.height*10, duration:0.3})
+            .call(() =>{
                 this.suicide();
             });
             
@@ -328,8 +300,11 @@ export class StartScreen extends PIXI.Container {
         gsap.timeline().to(this.titlesContainer.scale, {x:0.8, y:0.8, duration:0.8});
         gsap.timeline().to(this.titlesContainer, {alpha:0.7, duration:0.8});
         //
-        this.styleLabel.fill = dataProvider.data.colorDark;
-        gsap.to(this.btnLabel.scale, {x:0.6, y:0.6, duration:0.5});
+        // this.btnLabel.style.fill = dataProvider.data.colorDark;
+        gsap.timeline()
+            .to(this.btnLabel.scale, {x:0.6, y:0.6, duration:0.5})
+        gsap.timeline()
+            .to(this.btnLabel, {alpha:0, duration:0.4});
     }
 
     /* ------------------------------------------------------------
@@ -338,7 +313,8 @@ export class StartScreen extends PIXI.Container {
     readyToDie(){
         // remove前のdisplay要素アニメーションなどなど
     }
+
     suicide(){
-        this.parent.removeChild(this)
+        this.parent.removeChild(this);
     }
 }

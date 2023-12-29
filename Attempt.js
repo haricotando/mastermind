@@ -25,6 +25,9 @@ export class Attempt extends PIXI.Sprite {
         Utils.pivotCenter(this.boxMask);
         this.label.mask = this.boxMask;
 
+        this.intro();
+        
+        // DEBUG
         // if(this.id == 0){
         //     gsap.delayedCall(1, ()=>{
         //         this.add('1234', '1H / 2B', false);
@@ -36,6 +39,22 @@ export class Attempt extends PIXI.Sprite {
         //         this.add('5678', 'No Match', true);
         //     });
         // }
+    }
+
+    intro(){
+        this.box.alpha = 0;
+        const introDelay = 0.5;
+        gsap.delayedCall(Math.random()*0.3 + introDelay, ()=>{
+            // this.box.tint = dataProvider.data.colorEmph2;
+            gsap.set(this.box, {alpha:0})
+            gsap.timeline()
+                .to(this.box, {alpha:1, duration:0.2, ease:'none', repeat:1})
+                // .to(this.box, {pixi:{tint:false}, duration:0.05, ease:'none'})
+            // gsap.to(this.box, {pixi:{tint:false}, duration:0.1, delay:0.2})
+        });
+
+
+            
     }
 
     add(guess, result, isNoMatch){
