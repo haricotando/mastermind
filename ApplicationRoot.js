@@ -6,8 +6,9 @@ import { StartScreen } from './StartScreen.js';
 import { HeaderContainer } from './HeaderContainer.js';
 import { InputContainer } from './InputContainer.js';
 import { AttemptContainer } from './AttemptContainer.js';
-import { GuessMatchScreen } from './GuessMatchScreen.js';
-import { GameOverScreen } from './GameOverScreen.js';
+import { EndScreenContainer } from './EndScreenContainer.js';
+// import { GuessMatchScreen } from './GuessMatchScreen.js';
+// import { GameOverScreen } from './GameOverScreen.js';
 
 
 
@@ -29,6 +30,14 @@ export class ApplicationRoot extends PIXI.Container {
             fontFamily: 'Inter', fontSize: 100, fontWeight: 100, fill: dataProvider.data.colorLight,
         });
         
+        const colorMtxLight = new PIXI.ColorMatrixFilter();
+        colorMtxLight.tint(dataProvider.data.colorLight);
+        dataProvider.colorMatrixFilterBase.push(colorMtxLight);
+
+        const colorMtxDark = new PIXI.ColorMatrixFilter();
+        colorMtxDark.tint(dataProvider.data.colorDark);
+        dataProvider.colorMatrixFilterBase.push(colorMtxDark);
+
         const colorMtxEmph1 = new PIXI.ColorMatrixFilter();
         colorMtxEmph1.tint(dataProvider.data.colorEmph1);
         dataProvider.colorMatrixFilterEmph.push(colorMtxEmph1);
@@ -44,9 +53,12 @@ export class ApplicationRoot extends PIXI.Container {
         /* 
             DEBUG starts
         */
-        const grid = this.addChild(GraphicsHelper.drawGrid());
-        grid.alpha = 0;
-        Utils.initTrace(this);
+        // const grid = this.addChild(Utils.drawGrid(40));
+        // grid.alpha = 0.5;
+        // Utils.initTrace(this);
+
+        // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_gameover.png', 'bottom'));
+        // guide.alpha = 0.25;
         
         if(dataProvider.data.skipIntro){
             // this.initStartScreen();
@@ -55,8 +67,6 @@ export class ApplicationRoot extends PIXI.Container {
             this.initInput();
             return false;
         }
-        // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_gameover.png', 'bottom'));
-        // guide.alpha = 0.25;
         gsap.delayedCall(1.5, ()=>{
             // this.gameOver();
             // dataProvider.data.lastGuess = 1234;
@@ -102,12 +112,12 @@ export class ApplicationRoot extends PIXI.Container {
     }
     
     guessMatch(){
-        this.endScreen =  this.addChild(new GuessMatchScreen());
+        this.endScreen = this.addChild(new EndScreenContainer(true));
         AlignHelper.centerWindow(this.endScreen);
     }
 
     gameOver(){
-        this.endScreen = this.addChild(new GameOverScreen());
+        this.endScreen = this.addChild(new EndScreenContainer(false));
         AlignHelper.centerWindow(this.endScreen);
     }
 
