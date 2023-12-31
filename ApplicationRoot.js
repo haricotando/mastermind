@@ -7,6 +7,7 @@ import { HeaderContainer } from './HeaderContainer.js';
 import { InputContainer } from './InputContainer.js';
 import { AttemptContainer } from './AttemptContainer.js';
 import { EndScreenContainer } from './EndScreenContainer.js';
+import { QRContainer } from './QRContainer.js';
 // import { GuessMatchScreen } from './GuessMatchScreen.js';
 // import { GameOverScreen } from './GameOverScreen.js';
 
@@ -65,7 +66,10 @@ export class ApplicationRoot extends PIXI.Container {
             this.initAttempt();
             this.initHeader();
             this.initInput();
-            return false;
+            this.initQRBtn();
+            // return false;
+        }else{
+            this.initStartScreen();
         }
         gsap.delayedCall(1.5, ()=>{
             // this.gameOver();
@@ -76,9 +80,6 @@ export class ApplicationRoot extends PIXI.Container {
             DEBUG ends
         */
 
-        this.initStartScreen();
-        
-        
     }
 
     /* ------------------------------------------------------------
@@ -93,7 +94,8 @@ export class ApplicationRoot extends PIXI.Container {
     afterIntro(){
         this.initAttempt();
         this.initHeader();
-        this.initInput();   
+        this.initInput();  
+        this.initQRBtn(); 
     }
 
     initHeader(){
@@ -131,8 +133,43 @@ export class ApplicationRoot extends PIXI.Container {
         this.initInput();
     }
 
-    updateAttempt(){
-        this.attemptContainer.visible = false;
+    // updateAttempt(){
+    //     this.attemptContainer.visible = false;
+    // }
+
+    initQRBtn(){
+        const style = new PIXI.TextStyle({
+            fontFamily: 'Material Icons',
+            fontSize: 60,
+            fill: dataProvider.data.colorLight,
+            });
+
+        this.qrBtn = new PIXI.Text('\uef6b', style);
+        this.qrBtn.anchor.set(0.5);
+        this.qrBtn.alpha = 0;
+        this.qrBtn.scale.set(1.5);
+        this.addChild(this.qrBtn);
+        this.qrBtn.x = window.innerWidth - 74;
+        this.qrBtn.y = 73;
+        
+        gsap.to(this.qrBtn.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.timeline()
+            .to(this.qrBtn, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .call(() => {
+                this.qrBtn.interactive = true;
+            })
+
+        
+        this.qrBtn.on('touchstart', (event) => {
+            this.qrBtn.interactive = false;
+            this.qrContainer = new QRContainer();
+            this.addChild(this.qrContainer);
+        });
+        
+        // this.infoBtn.alpha = 0;
+        // gsap.timeline().to(this.infoBtn, {alpha:0, duration:0.1}, '+=4').call(()=>{
+        //     this.infoBtn.interactive = true;
+        // }).to(this.infoBtn, {alpha:1, duration:0.3});
     }
 
     /* ==================================================

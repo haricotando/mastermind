@@ -21,7 +21,7 @@ export class KeyPad extends PIXI.Container {
         this.circleFill = container.addChild(GraphicsHelper.exDrawCircle(0, 0, this.circleBaseSize/2, false, true));
         this.circleFill.tint = dataProvider.data.colorDark;
 
-        this.circleLine = container.addChild(GraphicsHelper.exDrawCircle(0, 0, this.circleBaseSize/2, true, false));
+        this.circleLine = container.addChild(GraphicsHelper.exDrawCircle(0, 0, this.circleBaseSize/2, {width:2}, false));
         this.circleLine.tint = dataProvider.data.colorLight;
         //
         this.label = container.addChild(new PIXI.Text(this.number, Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 100, fontWeight: 100})));
@@ -50,7 +50,7 @@ export class KeyPad extends PIXI.Container {
             .to(this.circleFill.scale, {x:1, y:1, duration:0.2, ease:'back.out(1)'})
         gsap.to(this.circleFill, {pixi:{tint:dataProvider.data.colorLight}, duration:0.1});
 
-        gsap.to(this.circleLine.scale, {x:1.1, y:1.1, duration:0.2, ease:'back.out'});
+        gsap.to(this.circleLine.scale, {x:1.05, y:1.05, duration:0.2, ease:'back.out'});
 
         // this.circleLine.filters = [dataProvider.colorMatrixFilterEmph[0]]
         // gsap.to(this.circleLine, {alpha:0, duration:0.2, ease:'back.in', delay:0.1});

@@ -1,6 +1,7 @@
 export const dataProvider = {
     app: undefined,
     data: {
+        // debug: true,
         // answerLock: true,
         // skipIntro: true,
         secret: '',
@@ -10,9 +11,11 @@ export const dataProvider = {
         offsetY: -20,
         headerOffset: 235,
 
+        // colorDark: 0x666666,
         colorDark: 0x1A1F22,
 
         colorLight: 0xDCD3CC,
+        // colorLight: 0x00FFFF,
 
         colorEmph1: 0x00FFFF,
         colorEmph2: 0xFFFF00,
@@ -20,6 +23,8 @@ export const dataProvider = {
     },
     baseStyle: {},
     colorMatrixFilterEmph:[],
+    colorMatrixFilterBase:[],
+    
 };
 
 /*

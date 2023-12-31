@@ -132,24 +132,23 @@ class Utils {
     /* ------------------------------------------------------------
         Grid引く
     ------------------------------------------------------------ */
-    static drawGrid(){
+    static drawGrid(gridSize){
         let gridContainer = new PIXI.Sprite();
+        const _gridSize = gridSize ? gridSize : 200;
+        const numOfLoops = Math.ceil(window.innerHeight/_gridSize);
+        console.log(numOfLoops)
+
         this._gridLine(gridContainer, 'v', 0, 0, 4);
-        this._gridLine(gridContainer, 'v', 200);
-        this._gridLine(gridContainer, 'v', 400);
-        this._gridLine(gridContainer, 'v', 600);
-        this._gridLine(gridContainer, 'v', 800);
-        this._gridLine(gridContainer, 'v', -200);
-        this._gridLine(gridContainer, 'v', -400);
-        this._gridLine(gridContainer, 'v', -600);
-        this._gridLine(gridContainer, 'v', -800);
-
         this._gridLine(gridContainer, 'h', 0, 0, 4);
-        this._gridLine(gridContainer, 'h', 200);
-        this._gridLine(gridContainer, 'h', 400);
-        this._gridLine(gridContainer, 'h', -200);
-        this._gridLine(gridContainer, 'h', -400);
+        for(let i=1; i<numOfLoops; i++){
+            this._gridLine(gridContainer, 'v', _gridSize * i);
+            this._gridLine(gridContainer, 'v', 0-_gridSize * i);
+            this._gridLine(gridContainer, 'h', _gridSize * i);
+            this._gridLine(gridContainer, 'h', 0-_gridSize * i);
+        }
 
+        gridContainer.x = window.innerWidth / 2;
+        gridContainer.y = window.innerHeight / 2;
         return gridContainer;
     }
 

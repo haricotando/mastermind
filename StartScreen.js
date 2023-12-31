@@ -144,6 +144,7 @@ export class StartScreen extends PIXI.Container {
 
         this.startBtn.on('touchstart', (event) => {
             this.startBtn.interactive = false;
+            this.btnLabel.style.fill = dataProvider.data.colorDark;
             this.outro();
         });
         //
@@ -195,7 +196,7 @@ export class StartScreen extends PIXI.Container {
     }
 
     introB(){
-        const openingDuration = 0.8;
+        const openingDuration = 0.7;
         gsap.timeline().set(this.mmVMask, {visible:true, width:1}).from(this.mmVMask, {width:1, duration:openingDuration, ease:'power3.inOut'})
 
         const linePosX = 415;
@@ -226,8 +227,6 @@ export class StartScreen extends PIXI.Container {
         this.titlesContainer.visible = true;
         this.titlesContainer.scale.set(0.7);
         // this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
-        
-
 
         gsap.timeline().to(this.titlesContainer, {alpha:1, duration:0.3, delay:0.3});
         let fxDelay = 0.3;
@@ -236,6 +235,7 @@ export class StartScreen extends PIXI.Container {
             this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[1]];
             this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[1]];
             this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.introC();
         });
         gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
             this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
@@ -250,28 +250,60 @@ export class StartScreen extends PIXI.Container {
 
         gsap.timeline().to(this.titlesContainer.scale, {x:1, y:1, duration:openingDuration, ease:'power3.out'})
             .call(() =>{
-                this.introC();
             });
-        gsap.to(this.introContainer, {y:this.introContainer.y-window.innerHeight/10, duration:1.2, ease:'power1.inOut'})
+        gsap.to(this.introContainer, {y:this.introContainer.y-window.innerHeight/10, duration:0.6, ease:'power1.inOut'})
     }
 
     introC(){
+
         this.titlesMask.visible = false;
         this.titlesContainer.mask = null;
         //
         this.startBtn.visible = true;
         this.circleLine.alpha = 0;
-        this.circleLine.scale.set(0.6);
-        gsap.to(this.circleLine, {alpha:1, duration:0.5, ease:'power1.out'});
-        gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.5, ease:'back.out(3)'});
+        this.circleLine.scale.set(2);
+        gsap.to(this.circleLine, {alpha:1, duration:0.4, ease:'power1.out'});
+        gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.4, ease:'back.out(3)'});
         //
+        this.circleFill.visible = true;
+        this.circleFill.tint = dataProvider.data.colorEmph1;
+        this.circleFill.alpha = 1;
+        this.circleFill.scale.set(0.1);
+        gsap.timeline()
+            .to(this.circleFill.scale, {x:1, y:1, duration:0.3, ease:'ease.back(1)'})
+        gsap.timeline()
+            .to(this.circleFill, {alpha:0, duration:0.1, ease:'none', delay:0.2})
+            .call(()=>{
+                this.circleFill.tint = dataProvider.data.colorLight;
+                this.circleLine.tint = dataProvider.data.colorEmph2;
+            });
+
         this.btnLabel.alpha = 0;
         this.btnLabel.y = -40;
         gsap.timeline().to(this.btnLabel, {y:0, duration:0.4}, '+=0.2');
         gsap.timeline().to(this.btnLabel, {alpha:1, duration:0.3}, '+=0.2')
             .call(() => {
+                this.circleLine.tint = dataProvider.data.colorLight;
                 this.startBtn.interactive = true;
             });
+
+
+        // this.titlesMask.visible = false;
+        // this.titlesContainer.mask = null;
+        // //
+        // this.startBtn.visible = true;
+        // this.circleLine.alpha = 0;
+        // this.circleLine.scale.set(0.6);
+        // gsap.to(this.circleLine, {alpha:1, duration:0.5, ease:'power1.out'});
+        // gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.5, ease:'back.out(3)'});
+        // //
+        // this.btnLabel.alpha = 0;
+        // this.btnLabel.y = -40;
+        // gsap.timeline().to(this.btnLabel, {y:0, duration:0.4}, '+=0.2');
+        // gsap.timeline().to(this.btnLabel, {alpha:1, duration:0.3}, '+=0.2')
+        //     .call(() => {
+        //         this.startBtn.interactive = true;
+        //     });
     }
 
     /* ------------------------------------------------------------
@@ -281,6 +313,7 @@ export class StartScreen extends PIXI.Container {
         this.circleFill.visible = true;
         this.circleFill.alpha = 1;
         let scaleDest = 10;
+        this.btnLabel.tin = 
 
         gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
         gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')

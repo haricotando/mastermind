@@ -43,7 +43,23 @@ export class HeaderContainer extends PIXI.Container {
 
     updateAttempt(){
         dataProvider.data.currentAttempt ++;
-        this.attempt.text = 'ATTEMPT: ' + dataProvider.data.currentAttempt + '/10';
+        
+        let fxDelay = 0.3;
+        let fxInterval = 0.05;
+        gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
+            this.attempt.text = 'ATTEMPT: ' + dataProvider.data.currentAttempt + '/10';
+            this.attempt.style.fill = dataProvider.data.colorEmph1;
+            this.attempt.scale.set(1.2, 0.8)
+        });
+        gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
+            this.attempt.style.fill = dataProvider.data.colorEmph2;
+            this.attempt.scale.set(0.9, 1.2)
+        });
+        gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
+            this.attempt.style.fill = dataProvider.data.colorLight;
+            gsap.to(this.attempt.scale, {x:1, y:1, duration:0.3, ease:'expo'})
+        });
+
     }
 
 

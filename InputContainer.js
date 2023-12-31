@@ -140,17 +140,19 @@ export class InputContainer extends PIXI.Container {
             this.subDelOutro('submit', 'delete');
             
             let result = this.validGuess();
-            this.parent.attemptContainer.addAttempt(this.currentGuess, result, result == 'No match' ? 1 : 0);
+            gsap.delayedCall(0.2, ()=>{
+                this.parent.attemptContainer.addAttempt(this.currentGuess, result, result == 'No match' ? 1 : 0);
+            })
             if(result == 'Match'){
                 this.submitAndReset(true);
-                gsap.delayedCall(0.1, ()=>{
+                gsap.delayedCall(0.2, ()=>{
                     this.parent.guessMatch();
                     return false;
                 });
             }else{
                 if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
                     this.submitAndReset(true);
-                    gsap.delayedCall(0.1, ()=>{
+                    gsap.delayedCall(0.2, ()=>{
                         this.parent.gameOver();
                         return false;
                     });
@@ -164,10 +166,15 @@ export class InputContainer extends PIXI.Container {
         this.deleteBtn.on('touchstart', (event) => {
             this.subDelOutro('delete', 'submit');
             gsap.timeline()
+                .set(this.buffer.style, {fill:dataProvider.data.colorEmph3})
                 .to(this.buffer, {x:-50, duration:0.05})
-                .call(()=> { this.buffer.text = '****'; })
+                .call(()=> {
+                    this.buffer.text = '****';
+                })
+                .set(this.buffer.style, {fill:dataProvider.data.colorEmph2})
                 .to(this.buffer, {x:50, duration:0.05})
                 .to(this.buffer, {x:0, duration:0.05})
+                .set(this.buffer.style, {fill:dataProvider.data.colorLight})
             gsap.timeline()
                 .set(this.buffer.style, {letterSpacing: 100})
                 .to(this.buffer.style, {letterSpacing:0, duration:0.2})
@@ -257,7 +264,7 @@ export class InputContainer extends PIXI.Container {
 
         if(withoutReset){
             gsap.timeline()
-                .to(this.buffer, {alpha:0, y:this.buffer.orgY - 400, duration:0.2, ease:'back.in(1)'})
+            .to(this.buffer, {alpha:0, y:this.buffer.orgY - 400, duration:0.2, ease:'back.in(1)'})
         }else{
             gsap.timeline()
                 .to(this.buffer, {alpha:0, y:this.buffer.orgY - 400, duration:0.2, ease:'back.in(1)'})
@@ -330,11 +337,11 @@ export class InputContainer extends PIXI.Container {
 
         gsap.timeline()
             .set(this.buffer, {y: this.buffer.orgY+75, duration:1})
-            .to(this.buffer, {y: this.buffer.orgY, duration:1, ease: 'elastic.out(1,0.3)'})
+            .to(this.buffer, {y: this.buffer.orgY, duration:0.6, ease: 'elastic.out(1, 0.3)'})
 
         gsap.timeline()
             .set(this.buffer.style, {letterSpacing: -50})
-            .to(this.buffer.style, {letterSpacing: 0, duration:0.75, ease: 'elastic.out(1,0.3)'})
+            .to(this.buffer.style, {letterSpacing: 0, duration:0.5, ease: 'elastic.out(1,0.3)'})
 
         if(this.currentGuess.length == 4){
             for(let i=0; i<10; i++){
