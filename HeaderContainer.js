@@ -3,7 +3,7 @@ import AlignHelper from './helper/AlignHelper.js';
 import GraphicsHelper from './helper/GraphicsHelper.js';
 import Utils from './helper/Utils.js';
 
-export class Header extends PIXI.Container {
+export class HeaderContainer extends PIXI.Container {
     /* ============================================================
         constructor
     ============================================================ */

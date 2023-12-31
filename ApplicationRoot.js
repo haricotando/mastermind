@@ -3,11 +3,14 @@ import Utils from './helper/Utils.js';
 import AlignHelper from './helper/AlignHelper.js';
 import GraphicsHelper from './helper/GraphicsHelper.js';
 import { StartScreen } from './StartScreen.js';
-import { Header } from './Header.js';
+import { HeaderContainer } from './HeaderContainer.js';
 import { InputContainer } from './InputContainer.js';
 import { AttemptContainer } from './AttemptContainer.js';
 import { EndScreenContainer } from './EndScreenContainer.js';
 import { QRContainer } from './QRContainer.js';
+// import { GuessMatchScreen } from './GuessMatchScreen.js';
+// import { GameOverScreen } from './GameOverScreen.js';
+
 
 
 export class ApplicationRoot extends PIXI.Container {
@@ -96,8 +99,8 @@ export class ApplicationRoot extends PIXI.Container {
     }
 
     initHeader(){
-        this.header = this.addChild(new Header());
-        AlignHelper.xCenterWindow(this.header);
+        this.headerContainer = this.addChild(new HeaderContainer());
+        AlignHelper.xCenterWindow(this.headerContainer);
     }
     
     initInput(){
@@ -121,7 +124,7 @@ export class ApplicationRoot extends PIXI.Container {
     }
 
     restart(){
-        this.removeChild(this.header);
+        this.removeChild(this.headerContainer);
         this.removeChild(this.attemptContainer);
         this.removeChild(this.inputContainer);
         this.generateSecretCode();
