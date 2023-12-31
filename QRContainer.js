@@ -1,4 +1,4 @@
-import { dataProvider } from './DataProvider.js';
+import { dataProvider } from './dataProvider.js';
 
 
 export class QRContainer extends PIXI.Container {
