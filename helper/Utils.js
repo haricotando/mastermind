@@ -136,7 +136,6 @@ class Utils {
         let gridContainer = new PIXI.Sprite();
         const _gridSize = gridSize ? gridSize : 200;
         const numOfLoops = Math.ceil(window.innerHeight/_gridSize);
-        console.log(numOfLoops)
 
         this._gridLine(gridContainer, 'v', 0, 0, 4);
         this._gridLine(gridContainer, 'h', 0, 0, 4);
@@ -191,9 +190,6 @@ class Utils {
     static pivotY(target){
         target.pivot.y = target.height / 2;
     }
-
-
-    
 }
 
 export default Utils;

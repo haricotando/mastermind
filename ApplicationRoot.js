@@ -8,6 +8,7 @@ import { HeaderContainer } from './HeaderContainer.js';
 import { QRContainer } from './QRContainer.js';
 import { AttemptContainer } from './AttemptContainer.js';
 import { InputContainer } from './InputContainer.js';
+import { NoteContainer } from './note/NoteContainer.js';
 
 
 
@@ -58,7 +59,7 @@ export class ApplicationRoot extends PIXI.Container {
         // grid.alpha = 0.5;
         // Utils.initTrace(this);
 
-        // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_gameover.png', 'bottom'));
+        // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_note.png', 'bottom'));
         // guide.alpha = 0.25;
         
         // dataProvider.data.lastGuess = 4092;
@@ -73,10 +74,44 @@ export class ApplicationRoot extends PIXI.Container {
             this.initHeader();
             this.initInput();
             this.initQRBtn();
+            this.initNoteBtn();
         }else{
             this.initStartScreen();
         }
+    }
 
+    initNoteBtn(){
+        const style = new PIXI.TextStyle({
+            fontFamily: 'Material Icons',
+            fontSize: 60,
+            fill: dataProvider.data.colorLight,
+            });
+
+        this.noteBtn = new PIXI.Text('\ue745', style);
+        this.noteBtn.zIndex = 1002;
+        this.noteBtn.anchor.set(0.5);
+        this.noteBtn.alpha = 0;
+        this.noteBtn.scale.set(1.5);
+        this.addChild(this.noteBtn);
+        this.noteBtn.x = 74;
+        this.noteBtn.y = 73;
+        
+        gsap.to(this.noteBtn.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.timeline()
+            .to(this.noteBtn, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .call(() => {
+                this.noteBtn.interactive = true;
+            })
+
+        this.noteContainer = new NoteContainer();
+        this.addChild(this.noteContainer);
+        AlignHelper.xCenterWindow(this.noteContainer);
+        
+        this.noteBtn.on('touchstart', (event) => {
+            this.noteBtn.interactive = false;
+            this.noteContainer.show();
+            this.noteContainer.zIndex = 2000;
+        });
     }
 
     /* ------------------------------------------------------------
@@ -91,8 +126,9 @@ export class ApplicationRoot extends PIXI.Container {
     afterIntro(){
         this.initAttempt();
         this.initHeader();
-        this.initInput();  
-        this.initQRBtn(); 
+        this.initInput();
+        this.initQRBtn();
+        this.initNoteBtn();
     }
 
     initHeader(){
@@ -103,7 +139,7 @@ export class ApplicationRoot extends PIXI.Container {
     
     initInput(){
         this.inputContainer = this.addChild(new InputContainer());
-        this.inputContainer.x = window.innerWidth/2;
+        AlignHelper.xCenterWindow(this.inputContainer);
     }
     
     initAttempt(){
@@ -149,6 +185,7 @@ export class ApplicationRoot extends PIXI.Container {
             this.qrBtn.interactive = false;
             this.qrContainer = new QRContainer();
             this.addChild(this.qrContainer);
+            this.qrContainer.zIndex = 2000;
         });
     }
 
@@ -159,6 +196,7 @@ export class ApplicationRoot extends PIXI.Container {
         this.initAttempt();
         this.headerContainer.reset();
         this.initInput();
+        this.noteContainer.reset();
     }
 
     /* ==================================================
@@ -175,6 +213,6 @@ export class ApplicationRoot extends PIXI.Container {
         dataProvider.data.secret = secretCode;
         dataProvider.data.currentAttempt = 0;
         dataProvider.data.lastGuess = '';
-        console.log(`SECRET: ${secretCode}`)
+        // console.log(`SECRET: ${secretCode}`)
     }
 }
