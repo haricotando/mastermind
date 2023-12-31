@@ -14,7 +14,6 @@ export class AttemptContainer extends PIXI.Container {
         this.attemptCount = 0;
         this.attempts = [];
         this.init();
-
     }
 
     init(){
@@ -23,6 +22,14 @@ export class AttemptContainer extends PIXI.Container {
         let posYCount = 0;
         let posYStart = 350;
         const posYMargin = 128;
+
+        /*
+            1, 6
+            2, 7
+            3, 8
+            4, 9
+            5, 10
+        */
 
         for(let i=0; i<10; i++){
             this['attempt' + i] = this.addChild(new Attempt(i));
@@ -35,6 +42,13 @@ export class AttemptContainer extends PIXI.Container {
             }
         }
 
+        /*
+            1, 2
+            3, 4
+            5, 6
+            7, 8
+            9, 10
+        */
         // for(let i=0; i<10; i++){
         //     this['attempt' + i] = this.addChild(new Attempt(i));
         //     this['attempt' + i].x = i % 2 === 0 ? posX[0] : posX[1];
@@ -49,9 +63,8 @@ export class AttemptContainer extends PIXI.Container {
         Attempt
     ------------------------------------------------------------ */
     addAttempt(guess, result, flag){
-        let attempt = this['attempt' + this.attemptCount];
+        let attempt = this['attempt' + (dataProvider.data.currentAttempt-1)];
         attempt.add(guess, result, flag)
-        this.attemptCount++;
 
         // flag 0 = default
         // flag 1 = no match

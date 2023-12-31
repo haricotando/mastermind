@@ -15,6 +15,10 @@ export class HeaderContainer extends PIXI.Container {
     }
 
     initTitle(){
+        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, dataProvider.data.headerOffset, false, {color:dataProvider.data.colorDark}));
+        this.bg.pivot.x = this.bg.width/2;
+        this.bg.visible = false;
+        
         // ===== title =====
         this.mmHolder = this.addChild(new PIXI.Container());
         this.master = this.mmHolder.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 55, fontWeight: 300, letterSpacing: 20})));
@@ -38,12 +42,13 @@ export class HeaderContainer extends PIXI.Container {
         gsap.timeline()
             .set(this.attempt, {y:168*2, delay:0.1})
             .to(this.attempt, {alpha:1, y:168, duration:0.4, ease:'back.out(2)', delay:introDelay})
+            .call(()=>{
+                this.bg.visible = true;
+            })
         
     }
 
     updateAttempt(){
-        dataProvider.data.currentAttempt ++;
-        
         let fxDelay = 0.3;
         let fxInterval = 0.05;
         gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
@@ -62,6 +67,9 @@ export class HeaderContainer extends PIXI.Container {
 
     }
 
+    reset(){
+        this.updateAttempt();
+    }
 
     suicide(){
     }

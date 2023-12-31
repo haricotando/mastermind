@@ -3,7 +3,7 @@ import { dataProvider } from './dataProvider.js';
 
 WebFont.load({
     google: {
-      families: ['Inter:100,300,200,400,700,900', 'Material+Icons'],
+      families: ['Inter:100,200,300,400,700', 'Material+Icons'],
     },
     
     active: () => {

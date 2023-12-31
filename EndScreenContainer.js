@@ -9,6 +9,7 @@ export class EndScreenContainer extends PIXI.Container {
     ============================================================ */
     constructor(isMatch) {
         super();
+        this.isMatch = isMatch;
         if(isMatch){
             this.initBackground(dataProvider.data.colorEmph1);
             this.initGuessMatch();
@@ -27,7 +28,6 @@ export class EndScreenContainer extends PIXI.Container {
         this.bg.tint = dataProvider.data.colorDark;
         this.bg.orgY = 0 - window.innerHeight/2 + dataProvider.data.headerOffset;
         this.bg.y = this.bg.orgY;
-        this.bg.visible = false;
 
         this.fxBox = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, window.innerHeight - dataProvider.data.headerOffset, false, true));
         Utils.pivotX(this.fxBox);
@@ -38,63 +38,111 @@ export class EndScreenContainer extends PIXI.Container {
 
         gsap.set(this.fxBox, {y:window.innerHeight});
         gsap.timeline()
-            .to(this.fxBox, {y:this.fxBox.orgY, duration:0.2, ease:'power1.out'})
-            .to(this.fxBox, {alpha:0.3, duration:0.3, ease:'none'})
-            .to(this.fxBox, {alpha:0.8, duration:0.1, ease:'none'});
+        .to(this.fxBox, {y:this.fxBox.orgY, duration:0.2, ease:'power1.out'})
+        .to(this.fxBox, {alpha:0.3, duration:0.3, ease:'none'})
+        .to(this.fxBox, {alpha:0.8, duration:0.1, ease:'none'});
+        gsap.timeline()
+        
+        gsap.set(this.bg, {y:window.innerHeight});
+        gsap.timeline()
+            .to(this.bg, {y:this.fxBox.orgY, duration:0.2, ease:'power1.out'})
     }
 
     /* ------------------------------------------------------------
         正解時の演出
     ------------------------------------------------------------ */
     initGuessMatch(){
+        this.fxContainer = this.addChild(new PIXI.Container());
         this.yourGuess = this.addChild(new PIXI.Text(dataProvider.data.lastGuess, Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 250, fontWeight: 200, letterSpacing: 0})));
         this.yourGuess.anchor.set(0.5);
         this.yourGuess.orgY = 0 - window.innerHeight/6.5;
+        this.fxContainer.y = this.yourGuess.orgY;
+        
 
-        this.guessMatchHolder = this.addChild(new PIXI.Container());
-        this.guessText = this.guessMatchHolder.addChild(new PIXI.Text('Guess ', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 105, fontWeight: 700, letterSpacing: 0})));
-        this.guessMatches = this.guessMatchHolder.addChild(new PIXI.Text('matches!', Utils.cloneTextStyle(this.guessText.style, {fontWeight: 200, letterSpacing: 0})));
-        this.guessMatches.x = this.guessText.width;
-        Utils.pivotCenter(this.guessMatchHolder);
-        this.guessMatchHolder.y = this.yourGuess.orgY + 250;
+        this.subText = this.addChild(new PIXI.Text('Correct!', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 180, fontWeight: 200, letterSpacing: 10})));
+        this.subText.anchor.set(0.5);
+        this.subText.y = this.yourGuess.orgY + 300;
 
         gsap.set(this.yourGuess.scale, {x:0.6, y:0.6});
         gsap.set(this.yourGuess, {y:this.yourGuess.orgY+1000});
         gsap.set(this.yourGuess.style, {letterSpacing:20});
         this.bg.visible = true;
         this.yourGuess.visible = true;
-        this.guessMatchHolder.alpha = 0;
-        this.guessMatchHolder.visible =true;
+        this.subText.alpha = 0;
+        this.subText.visible =true;
         
         gsap.timeline()
-            .to(this.yourGuess.scale, {x:1, y:1, duration:0.2, ease:'back.out(1)'})
+            .to(this.yourGuess.scale, {x:1, y:1, duration:0.3, ease:'back.out(1)'})
         gsap.timeline()
             .to(this.yourGuess, {y:this.yourGuess.orgY, duration:0.3, ease:'back.out(1)'})
             .set(this.yourGuess.style, {fontWeight:700, fill:dataProvider.data.colorDark})
-            .to(this.yourGuess.style, {fontSize:340, duration:0.3, ease:'expo'});
+            .to(this.yourGuess.style, {fontSize:340, duration:0.2, ease:'expo'});
         gsap.set(this.yourGuess.style, {letterSpacing:100})
         gsap.to(this.yourGuess.style, {letterSpacing:0, duration:0.3, ease:'back.out(1)', delay:0.1})
 
-        this.guessMatchHolder.filters = [dataProvider.colorMatrixFilterEmph[0]];
-        gsap.timeline()
-            .set(this.guessMatchHolder.scale, {x:1.5, y:0.5})
-            .set(this.guessMatchHolder, {alpha:1, delay:0.5})
-        
-        let fxDelay = 0.5;
+        this.subText.filters = [dataProvider.colorMatrixFilterEmph[0]];
+        this.subText.scale.set(1.5, 0.3);
+            
+        let fxDelay = 0.6;
         let fxInterval = 0.05;
         gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
-            this.guessMatchHolder.filters = [dataProvider.colorMatrixFilterEmph[1]];
-            this.guessMatchHolder.scale.set(1.2, 0.7);
-            this.initBtn();
+            this.subText.alpha = 1;
+            this.subText.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.subText.scale.set(1.2, 0.7);
+            this.initFX();
         });
         gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
-            this.guessMatchHolder.filters = [dataProvider.colorMatrixFilterBase[0]];
-            this.guessMatchHolder.scale.set(0.9, 1.2);
+            this.subText.filters = [dataProvider.colorMatrixFilterBase[0]];
+            this.subText.scale.set(0.8, 1.2);
         });
         gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
-            this.guessMatchHolder.filters = [dataProvider.colorMatrixFilterBase[1]];
-            gsap.to(this.guessMatchHolder.scale, {x:1, y:1, duration:0.1, ease:'back.out(1)'})
+            this.subText.filters = [dataProvider.colorMatrixFilterBase[1]];
+            gsap.to(this.subText.scale, {x:1, y:1, duration:0.1, ease:'back.out(1)'})
+            this.initBtn();
         });
+
+        const fxCircle = this.fxContainer.addChild(GraphicsHelper.exDrawCircle(0, 0, 1200, false, true));
+        fxCircle.alpha = 0;
+        fxCircle.scale.set(0.1);
+        gsap.timeline()
+            .set(fxCircle, {alpha:1, delay:0.4})
+            .to(fxCircle.scale, {x:1, y:1, duration:0.5, ease:'power3.out'})
+        gsap.to(fxCircle, {alpha:0, duration:0.9, ease:'none', delay:0.4})
+
+    }
+
+    initFX(){
+        for(let i=0; i<20; i++){
+            const fx = this.fxContainer.addChild(this.makeFx());
+            const sec = Math.random()*10+5;
+            fx.alpha = 0;
+            gsap.timeline({repeat:-1})
+                .to(fx, {alpha:1, duration:0.5, ease:'none'})
+                .to(fx, {rotation:Math.random()*1, duration:sec, ease:'none'}, '-=0.5')
+                .to(fx.scale, {x:2, y:2, duration:sec, ease:'none'}, '-='+(0.2+sec))
+                .to(fx, {alpha:0, duration:0.5, ease:'none'}, '-=1')
+        }
+    }
+
+    makeFx(){
+        const fxContainer = new PIXI.Container();
+        const num = Math.round(Math.random()*1*5+5);
+        for(let i=0; i<num; i++){
+            fxContainer.addChild(this.drawLine());
+        }
+        return fxContainer;
+
+    }
+
+    drawLine(){
+        let line = new PIXI.Graphics();
+        line.lineStyle(2, Math.random()>0.5 ? dataProvider.data.colorEmph1 : 0xFFFFFF);
+        line.moveTo(0, 0);
+        line.lineTo((500+Math.random()*100)*Math.random()*2, 0);
+        line.rotation = Math.random()*6;
+        line.alpha = Math.random()+0.1;
+
+        return line;
     }
 
     /* ------------------------------------------------------------
@@ -178,20 +226,32 @@ export class EndScreenContainer extends PIXI.Container {
             this.outro();
         });
 
-        this.circleLine.scale.set(2);
+        // this.startBtn.visible = true;
         this.circleLine.alpha = 0;
-        gsap.to(this.circleLine, {alpha:1, duration:0.5, ease:'power1.out'});
+        this.circleLine.scale.set(2);
+        gsap.to(this.circleLine, {alpha:1, duration:0.4, ease:'power1.out'});
+        gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.4, ease:'back.out(3)'});
+        //
+        this.circleFill.visible = true;
+        this.circleFill.tint = dataProvider.data.colorDark;
+        this.circleFill.alpha = 1;
+        this.circleFill.scale.set(0.1);
         gsap.timeline()
-            .to(this.circleLine.scale, {x:1, y:1, duration:0.3, ease:'back.out(1)'})
+            .to(this.circleFill.scale, {x:1, y:1, duration:0.3, ease:'ease.back(1)'})
+        gsap.timeline()
+            .to(this.circleFill, {alpha:0, duration:0.1, ease:'none', delay:0.2})
             .call(()=>{
-                this.startBtn.interactive = true;
-            })
+                this.circleFill.tint = dataProvider.data.colorLight;
+            });
 
-        this.btnLabel.scale.set(0.4);
         this.btnLabel.alpha = 0;
-        gsap.to(this.btnLabel.scale, {x:1, y:1, duration  :0.3, ease:'back.out(3)', delay:0.1});
-        gsap.to(this.btnLabel, {alpha:1, duration :0.3, ease:'none', delay:0.2});
-
+        this.btnLabel.y = -40;
+        gsap.timeline().to(this.btnLabel, {y:0, duration:0.4}, '+=0.2');
+        gsap.timeline().to(this.btnLabel, {alpha:1, duration:0.3}, '+=0.2')
+            .call(() => {
+                // this.circleLine.tint = dataProvider.data.colorLight;
+                this.startBtn.interactive = true;
+            });
     }
 
     /* ------------------------------------------------------------
@@ -206,9 +266,15 @@ export class EndScreenContainer extends PIXI.Container {
         gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
         gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')
             .call(() =>{
-                // this.yourGuess.visible = false;
-                // this.guessMatchHolder.visible = false;
                 this.fxBox.visible = false;
+                if(this.isMatch){
+                    this.yourGuess.visible = false;
+                    this.subText.visible = false;
+                    this.fxContainer.visible = false;
+                }else{
+                    this.gameText.visible = false;
+                    this.overText.visible = false;
+                }
                 this.parent.restart();
             })
             .to(this.circleFill, {y:0-this.circleFill.height*10, duration:0.3})

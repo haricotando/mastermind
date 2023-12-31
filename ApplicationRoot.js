@@ -3,13 +3,11 @@ import Utils from './helper/Utils.js';
 import AlignHelper from './helper/AlignHelper.js';
 import GraphicsHelper from './helper/GraphicsHelper.js';
 import { StartScreen } from './StartScreen.js';
-import { HeaderContainer } from './HeaderContainer.js';
-import { InputContainer } from './InputContainer.js';
-import { AttemptContainer } from './AttemptContainer.js';
 import { EndScreenContainer } from './EndScreenContainer.js';
+import { HeaderContainer } from './HeaderContainer.js';
 import { QRContainer } from './QRContainer.js';
-// import { GuessMatchScreen } from './GuessMatchScreen.js';
-// import { GameOverScreen } from './GameOverScreen.js';
+import { AttemptContainer } from './AttemptContainer.js';
+import { InputContainer } from './InputContainer.js';
 
 
 
@@ -24,6 +22,7 @@ export class ApplicationRoot extends PIXI.Container {
     }
 
     init(){
+        this.sortableChildren = true;
         this.generateSecretCode();
 
         // PRESET作る
@@ -51,6 +50,7 @@ export class ApplicationRoot extends PIXI.Container {
         colorMtxEmph3.tint(dataProvider.data.colorEmph3);
         dataProvider.colorMatrixFilterEmph.push(colorMtxEmph3);
         
+
         /* 
             DEBUG starts
         */
@@ -61,24 +61,21 @@ export class ApplicationRoot extends PIXI.Container {
         // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_gameover.png', 'bottom'));
         // guide.alpha = 0.25;
         
+        // dataProvider.data.lastGuess = 4092;
+        // dataProvider.data.currentAttempt = 9;
+        
+        /* 
+            DEBUG ends
+        */
+
         if(dataProvider.data.skipIntro){
-            // this.initStartScreen();
             this.initAttempt();
             this.initHeader();
             this.initInput();
             this.initQRBtn();
-            // return false;
         }else{
             this.initStartScreen();
         }
-        gsap.delayedCall(1.5, ()=>{
-            // this.gameOver();
-            // dataProvider.data.lastGuess = 1234;
-            // this.guessMatch();
-        });
-        /* 
-            DEBUG ends
-        */
 
     }
 
@@ -101,13 +98,14 @@ export class ApplicationRoot extends PIXI.Container {
     initHeader(){
         this.headerContainer = this.addChild(new HeaderContainer());
         AlignHelper.xCenterWindow(this.headerContainer);
+        this.headerContainer.zIndex = 1000;
     }
     
     initInput(){
         this.inputContainer = this.addChild(new InputContainer());
         this.inputContainer.x = window.innerWidth/2;
     }
-
+    
     initAttempt(){
         this.attemptContainer = this.addChild(new AttemptContainer());
         AlignHelper.xCenterWindow(this.attemptContainer);
@@ -123,20 +121,6 @@ export class ApplicationRoot extends PIXI.Container {
         AlignHelper.centerWindow(this.endScreen);
     }
 
-    restart(){
-        this.removeChild(this.headerContainer);
-        this.removeChild(this.attemptContainer);
-        this.removeChild(this.inputContainer);
-        this.generateSecretCode();
-        this.initAttempt();
-        this.initHeader();
-        this.initInput();
-    }
-
-    // updateAttempt(){
-    //     this.attemptContainer.visible = false;
-    // }
-
     initQRBtn(){
         const style = new PIXI.TextStyle({
             fontFamily: 'Material Icons',
@@ -145,6 +129,7 @@ export class ApplicationRoot extends PIXI.Container {
             });
 
         this.qrBtn = new PIXI.Text('\uef6b', style);
+        this.qrBtn.zIndex = 1001;
         this.qrBtn.anchor.set(0.5);
         this.qrBtn.alpha = 0;
         this.qrBtn.scale.set(1.5);
@@ -165,11 +150,15 @@ export class ApplicationRoot extends PIXI.Container {
             this.qrContainer = new QRContainer();
             this.addChild(this.qrContainer);
         });
-        
-        // this.infoBtn.alpha = 0;
-        // gsap.timeline().to(this.infoBtn, {alpha:0, duration:0.1}, '+=4').call(()=>{
-        //     this.infoBtn.interactive = true;
-        // }).to(this.infoBtn, {alpha:1, duration:0.3});
+    }
+
+    restart(){
+        this.removeChild(this.attemptContainer);
+        this.removeChild(this.inputContainer);
+        this.generateSecretCode();
+        this.initAttempt();
+        this.headerContainer.reset();
+        this.initInput();
     }
 
     /* ==================================================

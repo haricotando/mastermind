@@ -136,6 +136,7 @@ export class InputContainer extends PIXI.Container {
             ===== Submit touch event =====
         */
         this.submitBtn.on('touchstart', (event) => {
+            dataProvider.data.currentAttempt ++;
             this.parent.headerContainer.updateAttempt();
             this.subDelOutro('submit', 'delete');
             
@@ -145,14 +146,14 @@ export class InputContainer extends PIXI.Container {
             })
             if(result == 'Match'){
                 this.submitAndReset(true);
-                gsap.delayedCall(0.2, ()=>{
+                gsap.delayedCall(0.1, ()=>{
                     this.parent.guessMatch();
                     return false;
                 });
             }else{
                 if(dataProvider.data.currentAttempt >= dataProvider.data.attemptMax){
                     this.submitAndReset(true);
-                    gsap.delayedCall(0.2, ()=>{
+                    gsap.delayedCall(0.6, ()=>{
                         this.parent.gameOver();
                         return false;
                     });
