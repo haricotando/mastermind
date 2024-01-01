@@ -3,9 +3,8 @@ export const dataProvider = {
     data: {
         standalone: undefined,
         standaloneFooterOffset: -100,
-        // debug: true,
-        // answerLock: true,
-        // skipIntro: true,
+        answerLock: false,
+        skipIntro: false,
         secret: '',
         lastGuess: '',
         currentAttempt: 0,

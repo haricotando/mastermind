@@ -58,29 +58,32 @@ export class ApplicationRoot extends PIXI.Container {
         */
     //    Utils.initTrace(this);
 
-        // const grid = this.addChild(Utils.drawGrid(40));
-        // grid.alpha = 0.5;
-
-        // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_note.png', 'bottom'));
-        // guide.alpha = 0.25;
-        
-        // dataProvider.data.lastGuess = 4092;
-        // dataProvider.data.currentAttempt = 9;
-        
-        /* 
-            DEBUG ends
-        */
-
-        if(dataProvider.data.skipIntro){
-            this.initAttempt();
-            this.initHeader();
-            this.initInput();
-            this.initQRBtn();
-            this.initNoteBtn();
-        }else{
-            this.initStartScreen();
-        }
+    
+    // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_note.png', 'bottom'));
+    // guide.alpha = 0.25;
+    
+    // dataProvider.data.answerLock = true;
+    // dataProvider.data.skipIntro = true;
+    // dataProvider.data.lastGuess = 4092;
+    // dataProvider.data.currentAttempt = 9;
+    
+    /* 
+    DEBUG ends
+    */
+   
+   if(dataProvider.data.skipIntro){
+       this.initAttempt();
+       this.initHeader();
+       this.initInput();
+       this.initQRBtn();
+       this.initNoteBtn();
+    }else{
+        this.initStartScreen();
     }
+    
+    // const grid = this.addChild(Utils.drawGrid(40));
+    // grid.alpha = 0.5;
+}
 
     /* ------------------------------------------------------------
         イントロ
