@@ -2,8 +2,8 @@ export const dataProvider = {
     app: undefined,
     data: {
         // debug: true,
-        // answerLock: true,
-        // skipIntro: true,
+        answerLock: true,
+        skipIntro: true,
         secret: '',
         lastGuess: '',
         currentAttempt: 0,

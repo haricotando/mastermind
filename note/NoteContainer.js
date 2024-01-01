@@ -34,6 +34,7 @@ export class NoteContainer extends PIXI.Container {
         this.container.y = this.container.orgY;
         this.container.addChild(this.dialog);
         this.container.visible = false;
+        this.container.interactive = true;
 
         // ===== title =====
         const noteTitle = this.container.addChild(new PIXI.Text('NOTE', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 50, fontWeight: 400, fill:dataProvider.data.colorDark})));
