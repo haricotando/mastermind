@@ -149,11 +149,11 @@ export class EndScreenContainer extends PIXI.Container {
         ゲームーオーバー時
     ------------------------------------------------------------ */
     initGameOver(){
-        this.gameText = this.addChild(new PIXI.Text('GAME', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 250, fontWeight: 700, letterSpacing: 0})));
+        this.gameText = this.addChild(new PIXI.Text('GAME', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 0})));
         this.gameText.anchor.set(0.5);
         this.gameText.orgY = 0 - window.innerHeight/5.1;
         this.gameText.y = this.gameText.orgY;
-        this.overText = this.addChild(new PIXI.Text('OVER', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 250, fontWeight: 700, letterSpacing: 18})));
+        this.overText = this.addChild(new PIXI.Text('OVER', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 25})));
         this.overText.anchor.set(0.5);
         this.overText.y = this.gameText.orgY + 300;
 
