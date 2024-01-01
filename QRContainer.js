@@ -34,8 +34,7 @@ export class QRContainer extends PIXI.Container {
         gsap.timeline().to(this.dialog, {alpha:1, duration:0.3, ease:'expo'})
 
         //
-        this.dialog.interactive = true;
-        this.dialog.on('touchstart', (event) => {
+        this.bg.on('touchstart', (event) => {
             this.readyToDie();
         });
 

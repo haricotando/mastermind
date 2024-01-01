@@ -80,40 +80,6 @@ export class ApplicationRoot extends PIXI.Container {
         }
     }
 
-    initNoteBtn(){
-        const style = new PIXI.TextStyle({
-            fontFamily: 'Material Icons',
-            fontSize: 60,
-            fill: dataProvider.data.colorLight,
-            });
-
-        this.noteBtn = new PIXI.Text('\ue745', style);
-        this.noteBtn.zIndex = 1002;
-        this.noteBtn.anchor.set(0.5);
-        this.noteBtn.alpha = 0;
-        this.noteBtn.scale.set(1.5);
-        this.addChild(this.noteBtn);
-        this.noteBtn.x = 74;
-        this.noteBtn.y = 73;
-        
-        gsap.to(this.noteBtn.scale, {x:1, y:1, ease:'expo', delay:0.3})
-        gsap.timeline()
-            .to(this.noteBtn, {alpha:1, duration:0.2, ease:'none', delay:0.3})
-            .call(() => {
-                this.noteBtn.interactive = true;
-            })
-
-        this.noteContainer = new NoteContainer();
-        this.addChild(this.noteContainer);
-        AlignHelper.xCenterWindow(this.noteContainer);
-        
-        this.noteBtn.on('touchstart', (event) => {
-            this.noteBtn.interactive = false;
-            this.noteContainer.show();
-            this.noteContainer.zIndex = 2000;
-        });
-    }
-
     /* ------------------------------------------------------------
         イントロ
     ------------------------------------------------------------ */
@@ -157,6 +123,54 @@ export class ApplicationRoot extends PIXI.Container {
         AlignHelper.centerWindow(this.endScreen);
     }
 
+    /* ------------------------------------------------------------
+        Note, QR
+    ------------------------------------------------------------ */
+    initNoteBtn(){
+        const style = new PIXI.TextStyle({
+            fontFamily: 'Material Icons',
+            fontSize: 60,
+            fill: dataProvider.data.colorLight,
+            });
+
+        this.noteBtn = this.addChild(new PIXI.Container());
+        this.noteBtn.zIndex = 1002;
+
+        this.noteBtnBG = this.noteBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 80, false, true));
+        this.noteBtnBG.tint =dataProvider.data.colorDark;
+        this.noteBtnBG.alpha = 0;
+
+        this.noteBtnLabel = new PIXI.Text('\ue745', style);
+        this.noteBtnLabel.anchor.set(0.5);
+        this.noteBtnLabel.alpha = 0;
+        this.noteBtnLabel.scale.set(1.5);
+        this.noteBtn.addChild(this.noteBtnLabel);
+        this.noteBtn.x = 74;
+        this.noteBtn.y = 73;
+        
+        gsap.to(this.noteBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.timeline()
+            .to(this.noteBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .call(() => {
+                this.noteBtn.interactive = true;
+            })
+
+        this.noteContainer = new NoteContainer();
+        this.addChild(this.noteContainer);
+        AlignHelper.xCenterWindow(this.noteContainer);
+        
+        this.noteBtn.on('touchstart', (event) => {
+            this.noteBtn.interactive = false;
+            this.noteContainer.show();
+
+            gsap.timeline()
+                .set(this.noteBtnLabel.scale, {x:2, y:2})
+                .to(this.noteBtnLabel.scale, {x:1, y:1, duration:0.5, ease:'back.out(1)'})
+
+            this.noteContainer.zIndex = 2000;
+        });
+    }
+
     initQRBtn(){
         const style = new PIXI.TextStyle({
             fontFamily: 'Material Icons',
@@ -164,18 +178,25 @@ export class ApplicationRoot extends PIXI.Container {
             fill: dataProvider.data.colorLight,
             });
 
-        this.qrBtn = new PIXI.Text('\uef6b', style);
+        // this.qrBtnLabel
+        this.qrBtn = this.addChild(new PIXI.Container());
         this.qrBtn.zIndex = 1001;
-        this.qrBtn.anchor.set(0.5);
-        this.qrBtn.alpha = 0;
-        this.qrBtn.scale.set(1.5);
-        this.addChild(this.qrBtn);
+
+        this.qrBtnBG = this.qrBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 80, false, true));
+        this.qrBtnBG.tint =dataProvider.data.colorDark;
+        this.qrBtnBG.alpha = 0;
+
+        this.qrBtnLabel = new PIXI.Text('\uef6b', style);
+        this.qrBtn.addChild(this.qrBtnLabel);
+        this.qrBtnLabel.anchor.set(0.5);
+        this.qrBtnLabel.alpha = 0;
+        this.qrBtnLabel.scale.set(1.5);
         this.qrBtn.x = window.innerWidth - 74;
         this.qrBtn.y = 73;
         
-        gsap.to(this.qrBtn.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.to(this.qrBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.3})
         gsap.timeline()
-            .to(this.qrBtn, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .to(this.qrBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.3})
             .call(() => {
                 this.qrBtn.interactive = true;
             })
@@ -185,6 +206,11 @@ export class ApplicationRoot extends PIXI.Container {
             this.qrBtn.interactive = false;
             this.qrContainer = new QRContainer();
             this.addChild(this.qrContainer);
+
+            gsap.timeline()
+                .set(this.qrBtnLabel.scale, {x:2, y:2})
+                .to(this.qrBtnLabel.scale, {x:1, y:1, duration:0.5, ease:'back.out(1)'})
+
             this.qrContainer.zIndex = 2000;
         });
     }

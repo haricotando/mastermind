@@ -21,9 +21,9 @@ export class NoteBuffer extends PIXI.Container {
         this.dialog.endFill();
         this.dialog.alpha = 0.2;
         this.addChild(this.dialog);
-        this.dialog.interactive = true;
+        this.interactive = true;
 
-        this.dialog.on('touchstart', (event) => {
+        this.on('touchstart', (event) => {
             this.update();
         });
 
