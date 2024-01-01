@@ -101,7 +101,7 @@ export class EndScreenContainer extends PIXI.Container {
             this.initBtn();
         });
 
-        const fxCircle = this.fxContainer.addChild(GraphicsHelper.exDrawCircle(0, 0, 1200, false, true));
+        const fxCircle = this.fxContainer.addChild(GraphicsHelper.exDrawCircle(0, 0, 1500, false, true));
         fxCircle.alpha = 0;
         fxCircle.scale.set(0.1);
         gsap.timeline()

@@ -95,7 +95,8 @@ export class InputContainer extends PIXI.Container {
         this.buffer = this.addChild(new PIXI.Text('****', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 200, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         // this.guess.tint = dataProvider.data.colorLight;
         this.buffer.anchor.set(0.5);
-        this.buffer.orgY = this.keyPadContainer.y - window.innerHeight / 13;
+        this.buffer.orgY = window.innerHeight/2 + window.innerHeight/8 + this.buffer.height/4;
+        // this.buffer.orgY = this.keyPadContainer.y - window.innerHeight / 13;
         this.buffer.y = this.buffer.orgY;
         this.buffer.visible = false;
 

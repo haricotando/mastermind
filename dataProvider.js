@@ -1,6 +1,8 @@
 export const dataProvider = {
     app: undefined,
     data: {
+        standalone: undefined,
+        standaloneFooterOffset: -100,
         // debug: true,
         // answerLock: true,
         // skipIntro: true,
@@ -8,11 +10,12 @@ export const dataProvider = {
         lastGuess: '',
         currentAttempt: 0,
         attemptMax: 10,
+
         offsetY: -20,
         headerOffset: 235,
 
+        // Color 系は別objにまとめたい
         colorDark: 0x1A1F22,
-
         colorLight: 0xDCD3CC,
 
         colorEmph1: 0x00FFFF,

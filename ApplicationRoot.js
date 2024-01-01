@@ -25,6 +25,7 @@ export class ApplicationRoot extends PIXI.Container {
     init(){
         this.sortableChildren = true;
         this.generateSecretCode();
+        dataProvider.data.standalone = navigator.standalone;
 
         // PRESET作る
         dataProvider.baseStyle = new PIXI.TextStyle({
@@ -55,9 +56,10 @@ export class ApplicationRoot extends PIXI.Container {
         /* 
             DEBUG starts
         */
+    //    Utils.initTrace(this);
+
         // const grid = this.addChild(Utils.drawGrid(40));
         // grid.alpha = 0.5;
-        // Utils.initTrace(this);
 
         // const guide = this.addChild(Utils.loadDesignGuide('./guides/guide_note.png', 'bottom'));
         // guide.alpha = 0.25;
@@ -87,6 +89,8 @@ export class ApplicationRoot extends PIXI.Container {
         let startScreen = new StartScreen();
         this.addChild(startScreen);
         AlignHelper.centerWindow(startScreen);
+        
+        startScreen.y += dataProvider.data.standalone ? dataProvider.data.standaloneFooterOffset : 0
     }
 
     afterIntro(){
@@ -106,6 +110,7 @@ export class ApplicationRoot extends PIXI.Container {
     initInput(){
         this.inputContainer = this.addChild(new InputContainer());
         AlignHelper.xCenterWindow(this.inputContainer);
+        this.inputContainer.y += dataProvider.data.standalone ? dataProvider.data.standaloneFooterOffset : 0;
     }
     
     initAttempt(){
