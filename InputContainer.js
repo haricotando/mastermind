@@ -110,7 +110,7 @@ export class InputContainer extends PIXI.Container {
         this.submitLabel = this.submitBtn.addChild(new PIXI.Text('↑', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 300, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         this.submitLabel.anchor.set(0.5);
         
-        this.submitBtn.orgY = this.rect.y + this.rect.height/2.8;
+        this.submitBtn.orgY = this.keyPadContainer.y + this.rect.height/2 - 10;
         this.submitBtn.y = this.submitBtn.orgY;
         this.submitBtn.x = window.innerWidth/4.1;
         
@@ -127,7 +127,7 @@ export class InputContainer extends PIXI.Container {
         this.deleteLabel = this.deleteBtn.addChild(new PIXI.Text('X', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 300, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         this.deleteLabel.anchor.set(0.5);
         
-        this.deleteBtn.orgY = this.rect.y + this.rect.height/2.8;
+        this.deleteBtn.orgY = this.submitBtn.orgY;
         this.deleteBtn.y = this.deleteBtn.orgY;
         this.deleteBtn.x = 0 - window.innerWidth/4.1;
         
@@ -180,7 +180,7 @@ export class InputContainer extends PIXI.Container {
             gsap.timeline()
                 .set(this.buffer.style, {letterSpacing: 100})
                 .to(this.buffer.style, {letterSpacing:0, duration:0.2})
-                .call(()=>{this.resetKeyPads();})
+                .call(this.resetKeyPads.bind(this), null, 0.4);
         });
     }
 
@@ -338,7 +338,7 @@ export class InputContainer extends PIXI.Container {
         this.buffer.text = output;
 
         gsap.timeline()
-            .set(this.buffer, {y: this.buffer.orgY+75, duration:1})
+            .set(this.buffer, {y: this.buffer.orgY+75})
             .to(this.buffer, {y: this.buffer.orgY, duration:0.6, ease: 'elastic.out(1, 0.3)'})
 
         gsap.timeline()
@@ -349,8 +349,14 @@ export class InputContainer extends PIXI.Container {
             for(let i=0; i<10; i++){
                 this.keyPadList[i].mute();
             }
-            gsap.to(this.keyPadContainer, {alpha:0, duration:0.2});
+            gsap.timeline()
+            .to(this.keyPadContainer, {alpha:0, duration:0.2})
             gsap.to(this.keyPadContainer.scale, {x:0.9, y:0.9, duration:0.2});
+
+            this.buffer.tint = dataProvider.data.colorEmph1;
+            gsap.delayedCall(0.1, ()=>{
+                this.buffer.tint = dataProvider.data.colorLight;
+            });
 
             this.activateSubDelBtn('delete', false);
             this.activateSubDelBtn('submit', 300, true);
