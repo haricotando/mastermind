@@ -27,10 +27,10 @@ export class NoteContainer extends PIXI.Container {
         this.container = this.addChild(new PIXI.Container());
         this.dialog = new PIXI.Graphics();
         this.dialog.beginFill(dataProvider.data.colorLight);
-        this.dialog.drawRoundedRect(0, 0, window.innerWidth-40, 740, 20);
+        this.dialog.drawRoundedRect(0, 0, window.innerWidth-(dataProvider.data.standalone ? 0 : 40), 900, 120);
         this.dialog.endFill();
         this.dialog.pivot.x = this.dialog.width/2;
-        this.container.orgY = window.innerHeight - this.dialog.height+30;
+        this.container.orgY = window.innerHeight - 740+30;
         this.container.y = this.container.orgY;
         this.container.addChild(this.dialog);
         this.container.visible = false;
@@ -80,7 +80,8 @@ export class NoteContainer extends PIXI.Container {
         this.container.visible = true;
         gsap.timeline()
             .set(this.container, {y:this.container.orgY + this.container.height})
-            .to(this.container, {y:this.container.orgY, duration:0.3, ease:'back.out(1)'})
+            .to(this.container, {y:this.container.orgY + (dataProvider.data.standalone ? dataProvider.data.standaloneFooterOffset : 0), duration:0.3, ease:'back.out(1)'})
+            
     }
 
     hide(){
