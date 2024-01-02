@@ -144,7 +144,6 @@ export class StartScreen extends PIXI.Container {
 
         this.startBtn.on('touchstart', (event) => {
             this.startBtn.interactive = false;
-            this.btnLabel.style.fill = dataProvider.data.colorDark;
             this.outro();
         });
         //
@@ -276,16 +275,19 @@ export class StartScreen extends PIXI.Container {
             .call(()=>{
                 this.circleFill.tint = dataProvider.data.colorLight;
                 this.circleLine.tint = dataProvider.data.colorEmph2;
-            });
+            })
+            .call(()=>{
+                this.circleLine.tint = dataProvider.data.colorLight;
+                this.startBtn.interactive = true;
+            }, null, 0.5);
 
         this.btnLabel.alpha = 0;
         this.btnLabel.y = -40;
-        gsap.timeline().to(this.btnLabel, {y:0, duration:0.4}, '+=0.2');
-        gsap.timeline().to(this.btnLabel, {alpha:1, duration:0.3}, '+=0.2')
-            .call(() => {
-                this.circleLine.tint = dataProvider.data.colorLight;
-                this.startBtn.interactive = true;
-            });
+        this.btnLabel.scale.set(2);
+        gsap.to(this.btnLabel.scale, {x:1, y:1, duration:0.3, ease:'power1.out', delay:0.2})
+        gsap.timeline({delay:0.2, repeat:-1, repeatDelay:1})
+            .set(this.btnLabel, {y:-40, alpha:0})
+            .to(this.btnLabel, {y:0, alpha:1, duration:0.4, ease:'power1.inOut'});
     }
 
     /* ------------------------------------------------------------
@@ -296,6 +298,8 @@ export class StartScreen extends PIXI.Container {
         this.circleFill.alpha = 1;
         let scaleDest = 10;
 
+        this.btnLabel.style.fill = dataProvider.data.colorDark;
+        gsap.set(this.btnLabel, {alpha:1})
         gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
         gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')
             .call(() => {
