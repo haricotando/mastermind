@@ -36,10 +36,12 @@ export class NoteBuffer extends PIXI.Container {
 
     update(){
         this.label.text = ` ${this.letters[this.letterIndex]} `;
+        this.label.alpha = this.letterIndex == 0 ? 0.5: 1;
         this.letterIndex++;
         if(this.letterIndex >= this.letters.length){
             this.letterIndex = 0;
         }
+
     }
 
     reset(){
