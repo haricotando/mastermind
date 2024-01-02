@@ -9,6 +9,9 @@ export class NoteNumber extends PIXI.Container {
     ============================================================ */
     constructor(num) {
         super();
+        this.index = 0 ;
+        this.icons = ['', '\ue153 ', '\ue15b '];
+        this.iconsColor = [0, dataProvider.data.colorEmph2, dataProvider.data.colorEmph3];
 
         this.container = this.addChild(new PIXI.Container());
         this.label = this.container.addChild(new PIXI.Text(`　${num}　`, Utils.cloneTextStyle(dataProvider.baseStyle, {fontStyle:'italic', fontSize: 85, fontWeight: 200, fill:dataProvider.data.colorDark})));
@@ -22,28 +25,32 @@ export class NoteNumber extends PIXI.Container {
             fill: dataProvider.data.colorEmph3,
             });        
 
-        this.xMark = new PIXI.Text('\ue15b ', style);
+        this.xMark = new PIXI.Text('', style);
+        // this.xMark = new PIXI.Text('\ue15b ', style);
         this.container.addChild(this.xMark);
         this.xMark.anchor.set(0.5);
         this.xMark.x = this.label.x;
         this.xMark.y = this.label.y;
-        this.xMark.visible = false;
+        this.update()
 
         this.container.interactive = true;
         this.container.on('touchstart', (event) => {
-            if(this.xMark.visible){
-                this.xMark.visible = false;
-                gsap.to(this.label, {alpha:1, duration:0.1, ease:'none'})
-            }else{
-                this.xMark.visible = true;
-                gsap.to(this.label, {alpha:0.3, duration:0.1, ease:'none'})
-            }
+            this.update();
         });
     }
 
+    update(){
+        this.xMark.text = ` ${this.icons[this.index]} `;
+        this.xMark.style.fill = this.iconsColor[this.index];
+        this.label.alpha = this.index == 0 ? 1 : 0.6;
+        this.index++;
+        if(this.index >= this.icons.length){
+            this.index = 0;
+        }
+    }
+
     reset(){
-        this.xMark.visible = false;
-        this.label.alpha = 1;
+        // this.xMark.visible = false;
     }
 
     /* ------------------------------------------------------------
