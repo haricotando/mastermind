@@ -10,8 +10,8 @@ export class NoteNumber extends PIXI.Container {
     constructor(num) {
         super();
         this.index = 0 ;
-        this.icons = ['', '\ue153 ', '\ue15b '];
-        this.iconsColor = [0, dataProvider.data.colorEmph2, dataProvider.data.colorEmph3];
+        this.icons = ['', '\ue15b ', '\ue1b7 '];
+        this.iconsColor = [0, dataProvider.data.colorEmph3, dataProvider.data.colorEmph2];
 
         this.container = this.addChild(new PIXI.Container());
         this.label = this.container.addChild(new PIXI.Text(`　${num}　`, Utils.cloneTextStyle(dataProvider.baseStyle, {fontStyle:'italic', fontSize: 85, fontWeight: 200, fill:dataProvider.data.colorDark})));
@@ -42,7 +42,7 @@ export class NoteNumber extends PIXI.Container {
     update(){
         this.xMark.text = ` ${this.icons[this.index]} `;
         this.xMark.style.fill = this.iconsColor[this.index];
-        this.label.alpha = this.index == 0 ? 1 : 0.6;
+        this.label.alpha = this.index == 1 ? 0.4 : 1;
         this.index++;
         if(this.index >= this.icons.length){
             this.index = 0;
