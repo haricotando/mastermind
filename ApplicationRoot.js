@@ -168,15 +168,19 @@ export class ApplicationRoot extends PIXI.Container {
         AlignHelper.xCenterWindow(this.noteContainer);
         
         this.noteBtn.on('touchstart', (event) => {
-            this.noteBtn.interactive = false;
-            this.noteContainer.show();
-
-            gsap.timeline()
-                .set(this.noteBtnLabel.scale, {x:2, y:2})
-                .to(this.noteBtnLabel.scale, {x:1, y:1, duration:0.5, ease:'back.out(1)'})
-
-            this.noteContainer.zIndex = 2000;
+            this.noteBtnHandler();
         });
+    }
+    
+    noteBtnHandler(){
+        this.noteBtn.interactive = false;
+        this.noteContainer.show();
+
+        gsap.timeline()
+            .set(this.noteBtnLabel.scale, {x:2, y:2})
+            .to(this.noteBtnLabel.scale, {x:1, y:1, duration:0.5, ease:'back.out(1)'})
+
+        this.noteContainer.zIndex = 2000;
     }
 
     initQRBtn(){

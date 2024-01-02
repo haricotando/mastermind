@@ -133,6 +133,12 @@ export class InputContainer extends PIXI.Container {
         
         this.deleteBtn.visible = false;
 
+        this.buffer.interactive = true;
+        this.buffer.on('touchstart', (event) => {
+            this.parent.noteBtnHandler();
+        });
+
+
         /*
             ===== Submit touch event =====
         */
