@@ -50,6 +50,8 @@ export class NoteNumber extends PIXI.Container {
     }
 
     reset(){
+        this.index = 0;
+        this.update();
         // this.xMark.visible = false;
     }
 
