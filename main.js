@@ -1,4 +1,5 @@
 import { ApplicationRoot } from './ApplicationRoot.js';
+import { PCView } from './PCView.js';
 import { dataProvider } from './dataProvider.js';
 
 WebFont.load({
@@ -19,13 +20,18 @@ function init(){
     gsap.registerPlugin(PixiPlugin);
     let app = new PIXI.Application({
         background: '#1A1F22',
-        // background: '#FF0000',
         resizeTo: window
     });
     document.body.appendChild(app.view);
     dataProvider.app = app;
-    const applicationRoot = new ApplicationRoot();
-    app.stage.addChild(applicationRoot);
-    //
+
+    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+        app.stage.addChild(new ApplicationRoot());
+    }else{
+        const pcView = app.stage.addChild(new PCView());
+        pcView.pivot.set(110, 140);
+        pcView.x = window.innerWidth / 2;
+        pcView.y = window.innerHeight / 2;
+    }
 }
 

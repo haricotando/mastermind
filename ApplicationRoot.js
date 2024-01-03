@@ -64,7 +64,6 @@ export class ApplicationRoot extends PIXI.Container {
     
     // dataProvider.data.answerLock = true;
     // dataProvider.data.skipIntro = true;
-    // dataProvider.data.lastGuess = 4092;
     // dataProvider.data.currentAttempt = 9;
     
     /* 

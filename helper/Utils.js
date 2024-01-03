@@ -46,6 +46,7 @@ class Utils {
         const texture = PIXI.Texture.from(path);
         const sprite = new PIXI.Sprite(texture);
         texture.baseTexture.addListener("loaded", (event) => {
+            // dataProvider.app 依存は良くない
             let destSize = this.fitWidth(sprite.width, sprite.height, dataProvider.app.renderer.width);
             sprite.width = destSize[0];
             sprite.height = destSize[1];
