@@ -14,7 +14,7 @@ export class Attempt extends PIXI.Sprite {
         // ===== box =====
         this.box = GraphicsHelper.exDrawRect(0, 0, 400, 100, false, true);
         this.addChild(this.box);
-        this.box.tint = 0x000000;
+        this.box.tint = 0x333333;
         Utils.pivotCenter(this.box);
 
         this.label = this.addChild(new PIXI.Text('', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 55, fontWeight: 300, fill:dataProvider.data.colorLight})));
@@ -32,10 +32,14 @@ export class Attempt extends PIXI.Sprite {
         this.box.alpha = 0;
         const introDelay = 0.5;
         gsap.delayedCall(Math.random()*0.3 + introDelay, ()=>{
-            // this.box.tint = dataProvider.data.colorEmph2;
             gsap.set(this.box, {alpha:0})
             gsap.timeline()
-                .to(this.box, {alpha:0.2, duration:0.2, ease:'none', repeat:1})
+                .to(this.box, {alpha:0.4, duration:0.2, ease:'none', repeat:1})
+                .call(()=>{
+                    if(this.id >= dataProvider.data.attemptMax){
+                        this.deactivate();
+                    }
+                })
         });
     }
 
@@ -62,6 +66,16 @@ export class Attempt extends PIXI.Sprite {
             .set(this.label.style, {fill:dataProvider.data.colorEmph1, delay:0.2})
             .set(this.label.style, {fill:dataProvider.data.colorEmph2, delay:0.1})
             .set(this.label.style, {fill:isNoMatch ? dataProvider.data.colorEmph1 : dataProvider.data.colorLight, delay:0.1})
+    }
+
+    deactivate(){
+        gsap.timeline()
+            .set(this.box, {pixi:{tint:dataProvider.data.colorEmph3, alpha:0}})
+            .to(this.box, {alpha:0.4, duration:0.1, repeat:1})
+            .to(this.box.scale, {x:4, y:0.01, duration:Math.random()*1/5+0.1, ease:'power1.inOut'})
+            .set(this.box, {visible:false})
+            .set(this.box, {pixi:{tint:0x333333}})
+
     }
 
     suicide(){

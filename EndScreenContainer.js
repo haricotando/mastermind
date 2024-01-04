@@ -290,7 +290,7 @@ export class EndScreenContainer extends PIXI.Container {
                     this.gameText.visible = false;
                     this.overText.visible = false;
                 }
-                this.parent.restart();
+                this.parent.restart(this.isMatch);
             })
             .to(this.circleFill, {y:0-this.circleFill.height*10, duration:0.3})
             .call(() =>{

@@ -50,7 +50,7 @@ export class KeyPad extends PIXI.Container {
             .to(this.circleFill.scale, {x:1, y:1, duration:0.2, ease:'back.out(1)'})
         gsap.to(this.circleFill, {pixi:{tint:dataProvider.data.colorLight}, duration:0.1});
 
-        gsap.to(this.circleLine.scale, {x:1.05, y:1.05, duration:0.2, ease:'back.out'});
+        gsap.to(this.circleLine.scale, {x:1.07, y:1.07, duration:0.2, ease:'back.out'});
 
         // this.circleLine.filters = [dataProvider.colorMatrixFilterEmph[0]]
         // gsap.to(this.circleLine, {alpha:0, duration:0.2, ease:'back.in', delay:0.1});

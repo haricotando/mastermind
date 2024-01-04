@@ -31,11 +31,13 @@ export class AttemptContainer extends PIXI.Container {
             5, 10
         */
 
+       console.log('attempt max: ' + dataProvider.data.attemptMax);
         for(let i=0; i<10; i++){
             this['attempt' + i] = this.addChild(new Attempt(i));
             this['attempt' + i].x = i < 5 ? posX[0] : posX[1];
             this['attempt' + i].y = posYCount * posYMargin + posYStart;
             this['attempt' + i].attemptNumber = i+1;
+
             posYCount ++;
             if(i==4){
                 posYCount = 0;
@@ -56,7 +58,10 @@ export class AttemptContainer extends PIXI.Container {
         //     this['attempt' + i].attemptNumber = i+1;
         //     posYCount += i % 2 === 0 ? 0 : 1;
         // }
+    }
 
+    moreHard(){
+        // this['attempt' + dataProvider.data.attemptMax].deactivate();
     }
 
     /* ------------------------------------------------------------
@@ -64,7 +69,8 @@ export class AttemptContainer extends PIXI.Container {
     ------------------------------------------------------------ */
     addAttempt(guess, result, flag){
         let attempt = this['attempt' + (dataProvider.data.currentAttempt-1)];
-        attempt.add(guess, result, flag)
+        attempt.add(guess, result, flag);
+        
 
         // flag 0 = default
         // flag 1 = no match

@@ -118,6 +118,7 @@ export class ApplicationRoot extends PIXI.Container {
     initAttempt(){
         this.attemptContainer = this.addChild(new AttemptContainer());
         AlignHelper.xCenterWindow(this.attemptContainer);
+        this.attemptContainer.y = 50;
     }
     
     guessMatch(){
@@ -153,11 +154,11 @@ export class ApplicationRoot extends PIXI.Container {
         this.noteBtnLabel.scale.set(1.5);
         this.noteBtn.addChild(this.noteBtnLabel);
         this.noteBtn.x = 74;
-        this.noteBtn.y = 73;
+        this.noteBtn.y = 73 + 50;
         
-        gsap.to(this.noteBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.to(this.noteBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.7})
         gsap.timeline()
-            .to(this.noteBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .to(this.noteBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.7})
             .call(() => {
                 this.noteBtn.interactive = true;
             })
@@ -203,11 +204,11 @@ export class ApplicationRoot extends PIXI.Container {
         this.qrBtnLabel.alpha = 0;
         this.qrBtnLabel.scale.set(1.5);
         this.qrBtn.x = window.innerWidth - 74;
-        this.qrBtn.y = 73;
+        this.qrBtn.y = 73 + 50;
         
-        gsap.to(this.qrBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.3})
+        gsap.to(this.qrBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.7})
         gsap.timeline()
-            .to(this.qrBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.3})
+            .to(this.qrBtnLabel, {alpha:1, duration:0.2, ease:'none', delay:0.7})
             .call(() => {
                 this.qrBtn.interactive = true;
             })
@@ -226,14 +227,30 @@ export class ApplicationRoot extends PIXI.Container {
         });
     }
 
-    restart(){
-        this.removeChild(this.attemptContainer);
-        this.removeChild(this.inputContainer);
-        this.generateSecretCode();
-        this.initAttempt();
-        this.headerContainer.reset();
-        this.initInput();
-        this.noteContainer.reset();
+    restart(isNextGame){
+        if(isNextGame){
+            this.headerContainer.moreHard();
+            this.removeChild(this.attemptContainer);
+            this.removeChild(this.inputContainer);
+            this.generateSecretCode();
+            this.noteContainer.reset();
+            gsap.delayedCall(0.5, ()=>{
+                this.initAttempt(true);
+                this.initInput();
+            });
+            
+        }else{
+            dataProvider.data.attemptMax = 10;
+            dataProvider.data.hardMode = 0;
+            this.headerContainer.resetHard();
+            this.removeChild(this.attemptContainer);
+            this.removeChild(this.inputContainer);
+            this.generateSecretCode();
+            this.initAttempt();
+            this.initInput();
+            this.noteContainer.reset();
+
+        }
     }
 
     /* ==================================================
@@ -250,6 +267,5 @@ export class ApplicationRoot extends PIXI.Container {
         dataProvider.data.secret = secretCode;
         dataProvider.data.currentAttempt = 0;
         dataProvider.data.lastGuess = '';
-        // console.log(`SECRET: ${secretCode}`)
     }
 }

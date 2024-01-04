@@ -55,9 +55,6 @@ export class NoteNumber extends PIXI.Container {
         // this.xMark.visible = false;
     }
 
-    /* ------------------------------------------------------------
-        削除準備〜削除まで
-    ------------------------------------------------------------ */
     readyToDie(){
     }
 }

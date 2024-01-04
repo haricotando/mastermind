@@ -2,16 +2,18 @@ export const dataProvider = {
     app: undefined,
     data: {
         standalone: undefined,
-        standaloneFooterOffset: -100,
         answerLock: false,
         skipIntro: false,
+        
         secret: '',
         lastGuess: '',
         currentAttempt: 0,
         attemptMax: 10,
-
+        hardMode: 0,
+        
         offsetY: -20,
-        headerOffset: 235,
+        headerOffset: 285,
+        standaloneFooterOffset: -100,
 
         // Color 系は別objにまとめたい
         colorDark: 0x1A1F22,

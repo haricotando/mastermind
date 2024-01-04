@@ -105,7 +105,7 @@ export class InputContainer extends PIXI.Container {
         //
         this.submitCircleFill = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, false, true));
         this.submitCircleFill.tint = dataProvider.data.colorDark;
-        this.submitCircleLine = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:2}));
+        this.submitCircleLine = this.submitBtn.addChild(GraphicsHelper.exDrawCircle(0, 0, 160, {width:3}));
         //
         this.submitLabel = this.submitBtn.addChild(new PIXI.Text('↑', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 300, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         this.submitLabel.anchor.set(0.5);
