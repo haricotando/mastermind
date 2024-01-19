@@ -125,7 +125,7 @@ export class StartScreen extends PIXI.Container {
         this.startBtn = new PIXI.Sprite();
         this.addChild(this.startBtn);
 
-        this.startBtn.y = window.innerHeight/4;
+        this.startBtn.y = dataProvider.wHeight/4;
         
         // ===== Circle =====
         let radius = 165;
@@ -250,7 +250,7 @@ export class StartScreen extends PIXI.Container {
         gsap.timeline().to(this.titlesContainer.scale, {x:1, y:1, duration:openingDuration, ease:'power3.out'})
             .call(() =>{
             });
-        gsap.to(this.introContainer, {y:this.introContainer.y-window.innerHeight/10, duration:0.6, ease:'power1.inOut'})
+        gsap.to(this.introContainer, {y:this.introContainer.y-dataProvider.wHeight/10, duration:0.6, ease:'power1.inOut'})
     }
 
     introC(){

@@ -27,7 +27,7 @@ export class HeaderContainer extends PIXI.Container {
     }
 
     initTitle(){
-        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, dataProvider.data.headerOffset, false, {color:dataProvider.data.colorDark}));
+        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.data.headerOffset, false, {color:dataProvider.data.colorDark}));
         this.bg.pivot.x = this.bg.width/2;
         this.bg.visible = false;
         

@@ -203,7 +203,7 @@ export class ApplicationRoot extends PIXI.Container {
         this.qrBtnLabel.anchor.set(0.5);
         this.qrBtnLabel.alpha = 0;
         this.qrBtnLabel.scale.set(1.5);
-        this.qrBtn.x = window.innerWidth - 74;
+        this.qrBtn.x = dataProvider.wWidth - 74;
         this.qrBtn.y = 73 + 50;
         
         gsap.to(this.qrBtnLabel.scale, {x:1, y:1, ease:'expo', delay:0.7})
