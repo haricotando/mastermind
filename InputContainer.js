@@ -40,7 +40,7 @@ export class InputContainer extends PIXI.Container {
     ------------------------------------------------------------ */
     intro(){
         this.keyPadContainer.visible = true;
-        gsap.set(this.keyPadContainer, {alpha:0, y:window.innerHeight + this.keyPadContainer.height});
+        gsap.set(this.keyPadContainer, {alpha:0, y:dataProvider.wHeight + this.keyPadContainer.height});
         gsap.set(this.keyPadContainer.scale, {x:0.5, y:0.5});
         gsap.to(this.keyPadContainer, {alpha:1, duration:0.5, ease:'none'});
         gsap.to(this.keyPadContainer, {y:this.keyPadContainer.orgY, duration:0.5, ease:'back.out(1)'});
@@ -65,10 +65,10 @@ export class InputContainer extends PIXI.Container {
         this.keyPadContainer = new PIXI.Container();
         this.addChild(this.keyPadContainer);
 
-        this.rect = this.addChild(GraphicsHelper.exDrawRect(0, 0,window.innerWidth, (this.padSize+this.padMargin)*2, false, 0xFF0000));
+        this.rect = this.addChild(GraphicsHelper.exDrawRect(0, 0,dataProvider.wWidth, (this.padSize+this.padMargin)*2, false, 0xFF0000));
         Utils.pivotX(this.rect);
         this.rect.visible = false;
-        this.rect.y = window.innerHeight - this.rect.height;
+        this.rect.y = dataProvider.wHeight - this.rect.height;
         // // ===== KeyPadの生成と配置 =====
         let valueIndex = 0;
         for(let i=0; i<10; i++){
@@ -83,7 +83,7 @@ export class InputContainer extends PIXI.Container {
         }
 
         Utils.pivotX(this.keyPadContainer);
-        this.keyPadContainer.orgY = window.innerHeight - this.keyPadContainer.height-(window.innerHeight/20);
+        this.keyPadContainer.orgY = dataProvider.wHeight - this.keyPadContainer.height-(dataProvider.wHeight/20);
         this.keyPadContainer.y = this.keyPadContainer.orgY;
         this.keyPadContainer.visible = false;
     }
@@ -95,8 +95,8 @@ export class InputContainer extends PIXI.Container {
         this.buffer = this.addChild(new PIXI.Text('****', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 160, fontWeight: 200, letterSpacing: 0, fill:dataProvider.data.colorLight})));
         // this.guess.tint = dataProvider.data.colorLight;
         this.buffer.anchor.set(0.5);
-        this.buffer.orgY = window.innerHeight/2 + window.innerHeight/8 + this.buffer.height/4;
-        // this.buffer.orgY = this.keyPadContainer.y - window.innerHeight / 13;
+        this.buffer.orgY = dataProvider.wHeight/2 + dataProvider.wHeight/8 + this.buffer.height/4;
+        // this.buffer.orgY = this.keyPadContainer.y - dataProvider.wHeight / 13;
         this.buffer.y = this.buffer.orgY;
         this.buffer.visible = false;
 
@@ -112,7 +112,7 @@ export class InputContainer extends PIXI.Container {
         
         this.submitBtn.orgY = this.keyPadContainer.y + this.rect.height/2 - 10;
         this.submitBtn.y = this.submitBtn.orgY;
-        this.submitBtn.x = window.innerWidth/4.1;
+        this.submitBtn.x = dataProvider.wWidth/4.1;
         
         this.submitBtn.visible = false;
         
@@ -129,7 +129,7 @@ export class InputContainer extends PIXI.Container {
         
         this.deleteBtn.orgY = this.submitBtn.orgY;
         this.deleteBtn.y = this.deleteBtn.orgY;
-        this.deleteBtn.x = 0 - window.innerWidth/4.1;
+        this.deleteBtn.x = 0 - dataProvider.wWidth/4.1;
         
         this.deleteBtn.visible = false;
 

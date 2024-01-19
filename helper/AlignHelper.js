@@ -24,7 +24,11 @@ class AlignHelper {
     }
     // 横で真ん中
     static horizontalCenterWindow(target){
-        target.x = window.innerWidth / 2;
+        if(this.lockedScreenWidth){
+            target.x = this.lockedScreenWidth / 2;
+        }else{
+            target.x = window.innerWidth / 2;
+        }
     }
     // horizontal, vertical どっちがxでyか忘れる気がするのでショートカット
     static xCenterWindow(target){
@@ -33,7 +37,11 @@ class AlignHelper {
     
     // 縦で真ん中
     static verticalCenterWindow(target){
-        target.y = window.innerHeight / 2;
+        if(this.lockedScreenHeight){
+            target.y = this.lockedScreenHeight / 2;
+        }else{
+            target.y = dataProvider.wHeight / 2;
+        }
     }
     // horizontal, vertical どっちがxでyか忘れる気がするのでショートカット
     static yCenterWindow(target){
@@ -47,63 +55,21 @@ class AlignHelper {
         windowベースのどこか揃え
     ------------------------------------------------------------ */
     static bottomWindow(target){
-        target.y = window.innerHeight;
+        if(this.lockedScreenHeight){
+            target.y = this.lockedScreenHeight;
+        }else{
+            target.y = dataProvider.wHeight;
+        }
     }
 
     static topWindow(target){
         target.y = 0;
         this.horizontalCenterWindow(target);
     }
-    // static horizontalCenter(parent, target){
-    //     let parentWidth = parent == window ? window.innerWidth : parent.width;
-    //     target.x = Math.round((parentWidth - target.width) / 2);
-    // }
-    
-    // static verticalCenter(parent, target){
-    //     target.y = Math.round((parent.height - target.height) / 2);
-    // }
-    
-    // static verticalBottom(parent, target){
-    //     let parentHeight = parent == window ? window.innerHeight : parent.height;
-    //     target.y = Math.round(parentHeight - target.height);
-    // }
-    
-    // static top(parent, target){
-    //     this.horizontalCenter(parent, target);
-    //     target.y = 0;
-        
-    // }
-
-    // static center(parent, target){
-    //     this.horizontalCenter(parent, target);
-    //     this.verticalCenter(parent, target);
-    // }
-
-    // static bottom(parent, target){
-    //     this.horizontalCenter(parent, target);
-    //     this.verticalBottom(parent, target);
-    // }
-
-    // static lt(parent, target){
-    // }
-
-    // static rt(parent, target){
-    // }
-
-    // static left(parent, target){
-    //     target.x = 0;
-    // }
-
-    // static right(parent, target){
-    //     let parentWidth = parent == window ? window.innerWidth : parent.width;
-    //     target.x = parentWidth;
-    // }
-
-    // static lb(parent, target){
-    // }
-
-    // static rb(parent, target){
-    // }
+ 
 }
+
+AlignHelper.lockedScreenWidth = false;
+AlignHelper.lockedScreenHeight = false;
 
 export default AlignHelper;

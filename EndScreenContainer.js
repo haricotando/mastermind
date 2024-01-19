@@ -23,27 +23,27 @@ export class EndScreenContainer extends PIXI.Container {
         BG
     ------------------------------------------------------------ */
     initBackground(fxColor){
-        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, window.innerHeight - dataProvider.data.headerOffset, false, true));
+        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.wHeight - dataProvider.data.headerOffset, false, true));
         Utils.pivotX(this.bg);
         this.bg.tint = dataProvider.data.colorDark;
-        this.bg.orgY = 0 - window.innerHeight/2 + dataProvider.data.headerOffset;
+        this.bg.orgY = 0 - dataProvider.wHeight/2 + dataProvider.data.headerOffset;
         this.bg.y = this.bg.orgY;
 
-        this.fxBox = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, window.innerHeight - dataProvider.data.headerOffset, false, true));
+        this.fxBox = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.wHeight - dataProvider.data.headerOffset, false, true));
         Utils.pivotX(this.fxBox);
         this.fxBox.tint = fxColor;
-        this.fxBox.orgY = 0 - window.innerHeight/2 + dataProvider.data.headerOffset;
+        this.fxBox.orgY = 0 - dataProvider.wHeight/2 + dataProvider.data.headerOffset;
         this.fxBox.y = this.fxBox.orgY;
         this.fxBox.alpha = 0.5;
 
-        gsap.set(this.fxBox, {y:window.innerHeight});
+        gsap.set(this.fxBox, {y:dataProvider.wHeight});
         gsap.timeline()
         .to(this.fxBox, {y:this.fxBox.orgY, duration:0.2, ease:'power1.out'})
         .to(this.fxBox, {alpha:0.3, duration:0.3, ease:'none'})
         .to(this.fxBox, {alpha:0.8, duration:0.1, ease:'none'});
         gsap.timeline()
         
-        gsap.set(this.bg, {y:window.innerHeight});
+        gsap.set(this.bg, {y:dataProvider.wHeight});
         gsap.timeline()
             .to(this.bg, {y:this.fxBox.orgY, duration:0.2, ease:'power1.out'})
     }
@@ -55,7 +55,7 @@ export class EndScreenContainer extends PIXI.Container {
         this.bgFXContainer = this.addChild(new PIXI.Container());
         this.yourGuess = this.addChild(new PIXI.Text(dataProvider.data.lastGuess, Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 250, fontWeight: 200, letterSpacing: 0})));
         this.yourGuess.anchor.set(0.5);
-        this.yourGuess.orgY = 0 - window.innerHeight/6.5;
+        this.yourGuess.orgY = 0 - dataProvider.wHeight/6.5;
         this.bgFXContainer.y = this.yourGuess.orgY+320;
         
         this.upperFXContainer = this.addChild(new PIXI.Container());
@@ -161,7 +161,7 @@ export class EndScreenContainer extends PIXI.Container {
     initGameOver(){
         this.gameText = this.addChild(new PIXI.Text('GAME', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 0})));
         this.gameText.anchor.set(0.5);
-        this.gameText.orgY = 0 - window.innerHeight/5.1;
+        this.gameText.orgY = 0 - dataProvider.wHeight/5.1;
         this.gameText.y = this.gameText.orgY;
         this.overText = this.addChild(new PIXI.Text('OVER', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 25})));
         this.overText.anchor.set(0.5);
@@ -219,7 +219,7 @@ export class EndScreenContainer extends PIXI.Container {
 
         this.startBtn = new PIXI.Sprite();
         this.addChild(this.startBtn);
-        this.startBtn.y = window.innerHeight/4;
+        this.startBtn.y = dataProvider.wHeight/4;
 
         // ===== Circle =====
         this.circleFill = GraphicsHelper.exDrawCircle(0, 0, radius, false, {alpha:1});

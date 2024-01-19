@@ -11,7 +11,7 @@ export class QRContainer extends PIXI.Container {
         // Background
         this.bg = new PIXI.Graphics();
         this.bg.beginFill(dataProvider.data.colorDark);
-        this.bg.drawRect(0, 0, window.innerWidth, window.innerHeight);
+        this.bg.drawRect(0, 0, dataProvider.wWidth, dataProvider.wHeight);
         this.bg.endFill();
         this.bg.alpha = 0;
         this.addChild(this.bg);
@@ -24,8 +24,8 @@ export class QRContainer extends PIXI.Container {
         this.dialog.drawRoundedRect(0, 0, 800, 800, 40);
         this.dialog.endFill();
         this.dialog.pivot.set(400,400);
-        this.dialog.x = window.innerWidth / 2;
-        this.dialog.y = window.innerHeight / 2;
+        this.dialog.x = dataProvider.wWidth / 2;
+        this.dialog.y = dataProvider.wHeight / 2;
         this.addChild(this.dialog);
         this.dialog.scale.x = 1.5;
         this.dialog.scale.y = 1.5;

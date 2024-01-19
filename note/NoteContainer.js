@@ -12,7 +12,7 @@ export class NoteContainer extends PIXI.Container {
     constructor() {
         super();
 
-        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, window.innerHeight, false, true));
+        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.wHeight, false, true));
         this.bg.tint = dataProvider.data.colorDark;
         this.bg.pivot.x = this.bg.width/2;
         this.bg.alpha = 0.7;
@@ -27,10 +27,10 @@ export class NoteContainer extends PIXI.Container {
         this.container = this.addChild(new PIXI.Container());
         this.dialog = new PIXI.Graphics();
         this.dialog.beginFill(dataProvider.data.colorLight);
-        this.dialog.drawRoundedRect(0, 0, window.innerWidth-(dataProvider.data.standalone ? 0 : 40), 900, 120);
+        this.dialog.drawRoundedRect(0, 0, dataProvider.wWidth-(dataProvider.data.standalone ? 0 : 40), 900, 120);
         this.dialog.endFill();
         this.dialog.pivot.x = this.dialog.width/2;
-        this.container.orgY = window.innerHeight - 740+30;
+        this.container.orgY = dataProvider.wHeight - 740+30;
         this.container.y = this.container.orgY;
         this.container.addChild(this.dialog);
         this.container.visible = false;

@@ -1,9 +1,12 @@
 export const dataProvider = {
     app: undefined,
+    wWidth:0,
+    wHeight:0,
     data: {
         standalone: undefined,
         answerLock: false,
         skipIntro: false,
+
         
         secret: '',
         lastGuess: '',
