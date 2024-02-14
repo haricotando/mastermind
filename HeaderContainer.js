@@ -33,7 +33,7 @@ export class HeaderContainer extends PIXI.Container {
         
         // ===== title =====
         this.mmHolder = this.addChild(new PIXI.Container());
-        this.master = this.mmHolder.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 55, fontWeight: 300, letterSpacing: 20})));
+        this.master = this.mmHolder.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 65, fontWeight: 400, letterSpacing: 15})));
         this.mind = this.mmHolder.addChild(new PIXI.Text('MIND', Utils.cloneTextStyle(this.master.style, {fontWeight: 200})));
         this.mind.x = this.master.width + 15;
         Utils.pivotCenter(this.mmHolder);
