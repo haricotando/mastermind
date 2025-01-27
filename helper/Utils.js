@@ -5,11 +5,6 @@ class Utils {
         console.log('hello');
     }
 
-
-    /*
-        Utils.initTrace(this);
-        Utils.trace(val);
-    */
     static _appRoot = 0;
     static _traceText;
     static initTrace(appRoot){
@@ -69,35 +64,6 @@ class Utils {
         target.y = window.innerHeight - target.height;
     }
 
-
-
-
-    /*
-        余白あってもいいからいい感じに収めるのと、
-        余白無くしてクロップしてマスクするから、と両方の用途ありそうなのでもう少し考える
-    */
-    // static fitInside(w, h, max, byScale, by){
-    //     var current = [];
-    //     let _by = by ? by : 'auto';
-    //     switch(_by) {
-    //         case 'auto':
-    //             current = this.fitWidth(w, h, max, byScale);
-    //             if(current[1] > max) {
-    //                 current = this.fitHeight(w, h, max, byScale);
-    //             }
-    //             break;
-    //         case 'width':
-    //             current = this.fitWidth(w, h, max, byScale);
-    //             break;
-    //         case 'height':
-    //             current = this.fitHeight(w, h, max, byScale);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    //     return current;
-    // }
-
     static fitWidth(w, h, max, byScale){
         const maxW = max;
         const maxH = max;
@@ -131,55 +97,6 @@ class Utils {
     }
 
     /* ------------------------------------------------------------
-        Grid引く
-    ------------------------------------------------------------ */
-    static drawGrid(gridSize){
-        let gridContainer = new PIXI.Sprite();
-        const _gridSize = gridSize ? gridSize : 200;
-        const numOfLoops = Math.ceil(window.innerHeight/_gridSize);
-
-        this._gridLine(gridContainer, 'v', 0, 0, 4);
-        this._gridLine(gridContainer, 'h', 0, 0, 4);
-        for(let i=1; i<numOfLoops; i++){
-            this._gridLine(gridContainer, 'v', _gridSize * i);
-            this._gridLine(gridContainer, 'v', 0-_gridSize * i);
-            this._gridLine(gridContainer, 'h', _gridSize * i);
-            this._gridLine(gridContainer, 'h', 0-_gridSize * i);
-        }
-
-        gridContainer.x = window.innerWidth / 2;
-        gridContainer.y = window.innerHeight / 2;
-        return gridContainer;
-    }
-
-    static _gridLine(container, vh, offsetPos, color, lineWidth, lineLength){
-        let offsetLen = 0;
-        let line = new PIXI.Graphics();
-        line.lineStyle(
-            lineWidth ? lineWidth : 2, 
-            color ? color : 'red'
-        );
-        let val = lineLength ? lineLength : (vh == 'v' ? window.innerWidth : window.innerHeight);
-        let v = vh == 'v' ? val-offsetLen : 0;
-        let h = vh == 'h' ? val-offsetLen : 0;
-        line.moveTo(0-v/2, 0-h/2);
-        line.lineTo(v/2, h/2);
-        if(offsetPos){
-            switch(vh){
-                case 'v':
-                    line.y += offsetPos;
-                    break;
-                case 'h':
-                    line.x += offsetPos;
-                    break;
-                default:
-            }
-        }
-        container.addChild(line);
-        return line;
-    }
-
-    /* ------------------------------------------------------------
         pivot
     ------------------------------------------------------------ */
     static pivotCenter(target){
@@ -190,6 +107,15 @@ class Utils {
     }
     static pivotY(target){
         target.pivot.y = target.height / 2;
+    }
+
+    static isMobileDevice(){
+        return navigator.userAgent.match(/iPhone|Android.+Mobile/) ? true : false;
+    }
+    
+    static isOnGithub() {
+        const hostname = window.location.hostname;
+        return hostname.endsWith('.github.io');
     }
 }
 

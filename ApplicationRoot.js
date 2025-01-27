@@ -79,9 +79,6 @@ export class ApplicationRoot extends PIXI.Container {
     }else{
         this.initStartScreen();
     }
-    
-    // const grid = this.addChild(Utils.drawGrid(40));
-    // grid.alpha = 0.5;
 }
 
     /* ------------------------------------------------------------

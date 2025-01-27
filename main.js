@@ -3,10 +3,12 @@ import { PCView } from './PCView.js';
 import { LandscapeView } from './LandscapeView.js';
 import { dataProvider } from './dataProvider.js';
 import AlignHelper from './helper/AlignHelper.js';
+import Utils from './helper/Utils.js';
 
 let app;
-// let timeoutID = 0;
 let landscapeView;
+// const allowMobileOnly = true;
+const allowMobileOnly = Utils.isOnGithub();
 
 WebFont.load({
     google: {
@@ -29,17 +31,19 @@ function init(){
         background: '#1A1F22',
         resizeTo: window
     });
+    app.view.id = 'pixi';
     document.body.appendChild(app.view);
     dataProvider.app = app;
 
-    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
-        startApp();
-    }else{
+    if(!Utils.isMobileDevice() && allowMobileOnly){
         const pcView = app.stage.addChild(new PCView());
         pcView.pivot.set(110, 140);
         pcView.x = window.innerWidth / 2;
         pcView.y = window.innerHeight / 2;
+    }else{
+        startApp();
     }
+
 }
 
 function startApp(){

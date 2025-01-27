@@ -348,8 +348,8 @@ export class InputContainer extends PIXI.Container {
             .to(this.buffer, {y: this.buffer.orgY, duration:0.6, ease: 'elastic.out(1, 0.3)'})
 
         gsap.timeline()
-            .set(this.buffer.style, {letterSpacing: -50})
-            .to(this.buffer.style, {letterSpacing: 0, duration:0.5, ease: 'elastic.out(1,0.3)'})
+            .set(this.buffer.style, {letterSpacing: 100})
+            .to(this.buffer.style, {letterSpacing: 1, duration:0.5, ease: 'elastic.out(1,0.3)'})
 
         if(this.currentGuess.length == 4){
             for(let i=0; i<10; i++){
