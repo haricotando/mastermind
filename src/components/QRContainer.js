@@ -1,4 +1,4 @@
-import { dataProvider } from './dataProvider.js';
+
 
 
 export class QRContainer extends PIXI.Container {
@@ -25,7 +25,7 @@ export class QRContainer extends PIXI.Container {
         this.dialog.endFill();
         this.dialog.pivot.set(400,400);
         this.dialog.x = dataProvider.wWidth / 2;
-        this.dialog.y = dataProvider.wHeight / 2;
+        this.dialog.y = window.innerHeight / 2;
         this.addChild(this.dialog);
         this.dialog.scale.x = 1.5;
         this.dialog.scale.y = 1.5;

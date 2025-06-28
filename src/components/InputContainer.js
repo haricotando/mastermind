@@ -1,8 +1,8 @@
 import { KeyPad } from './KeyPad.js';
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class InputContainer extends PIXI.Container {
     /* ============================================================
@@ -359,9 +359,9 @@ export class InputContainer extends PIXI.Container {
             .to(this.keyPadContainer, {alpha:0, duration:0.2})
             gsap.to(this.keyPadContainer.scale, {x:0.9, y:0.9, duration:0.2});
 
-            this.buffer.tint = dataProvider.data.colorEmph1;
+            this.buffer.tint = design.colors.EMPH1;
             gsap.delayedCall(0.1, ()=>{
-                this.buffer.tint = dataProvider.data.colorLight;
+                this.buffer.tint = design.colors.LIGHT;
             });
 
             this.activateSubDelBtn('delete', false);

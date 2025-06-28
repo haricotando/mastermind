@@ -1,6 +1,6 @@
-import { dataProvider } from '../dataProvider.js';
-import GraphicsHelper from '../helper/GraphicsHelper.js';
-import Utils from '../helper/Utils.js';
+
+import GraphicsHelper from '../../utils/helper/GraphicsHelper.js';
+import Utils from '../../utils/helper/Utils.js';
 
 
 export class NoteBuffer extends PIXI.Container {
@@ -27,7 +27,7 @@ export class NoteBuffer extends PIXI.Container {
             this.update();
         });
 
-        this.label = this.addChild(new PIXI.Text(' ? ', Utils.cloneTextStyle(dataProvider.baseStyle, {fontStyle:'italic', fontSize: 110, fontWeight: 300, fill:dataProvider.data.colorDark})));
+        this.label = this.addChild(new PIXI.Text(' ? ', Utils.cloneTextStyle(design.baseStyle, {fontStyle:'italic', fontSize: 110, fontWeight: 300, fill:design.colors.DARK})));
         this.label.anchor.set(0.6, 0.5);
         this.label.x = 170/2;
         this.label.y = 220/2;

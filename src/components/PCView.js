@@ -1,5 +1,4 @@
-import { dataProvider } from './dataProvider.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
 
 export class PCView extends PIXI.Container {
     /* ============================================================

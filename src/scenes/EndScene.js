@@ -1,7 +1,8 @@
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+
+import { design } from '../constants/design.js';
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class EndScreenContainer extends PIXI.Container {
     /* ============================================================
@@ -11,10 +12,10 @@ export class EndScreenContainer extends PIXI.Container {
         super();
         this.isMatch = isMatch;
         if(isMatch){
-            this.initBackground(dataProvider.data.colorEmph1);
+            this.initBackground(design.colors.EMPH1);
             this.initGuessMatch();
         }else{
-            this.initBackground(dataProvider.data.colorEmph3);
+            this.initBackground(design.colors.EMPH3);
             this.initGameOver();
         }
     }        
@@ -25,7 +26,7 @@ export class EndScreenContainer extends PIXI.Container {
     initBackground(fxColor){
         this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.wHeight - dataProvider.data.headerOffset, false, true));
         Utils.pivotX(this.bg);
-        this.bg.tint = dataProvider.data.colorDark;
+        this.bg.tint = design.colors.DARK;
         this.bg.orgY = 0 - dataProvider.wHeight/2 + dataProvider.data.headerOffset;
         this.bg.y = this.bg.orgY;
 
@@ -53,7 +54,7 @@ export class EndScreenContainer extends PIXI.Container {
     ------------------------------------------------------------ */
     initGuessMatch(){
         this.bgFXContainer = this.addChild(new PIXI.Container());
-        this.yourGuess = this.addChild(new PIXI.Text(dataProvider.data.lastGuess, Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 250, fontWeight: 200, letterSpacing: 0})));
+        this.yourGuess = this.addChild(new PIXI.Text(dataProvider.data.lastGuess, Utils.cloneTextStyle(design.baseStyle, {fontSize: 250, fontWeight: 200, letterSpacing: 0})));
         this.yourGuess.anchor.set(0.5);
         this.yourGuess.orgY = 0 - dataProvider.wHeight/6.5;
         this.bgFXContainer.y = this.yourGuess.orgY+320;
@@ -64,7 +65,7 @@ export class EndScreenContainer extends PIXI.Container {
 
         
 
-        this.subText = this.addChild(new PIXI.Text('Correct!', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 180, fontWeight: 200, letterSpacing: 10})));
+        this.subText = this.addChild(new PIXI.Text('Correct!', Utils.cloneTextStyle(design.baseStyle, {fontSize: 180, fontWeight: 200, letterSpacing: 10})));
         this.subText.anchor.set(0.5);
         this.subText.y = this.yourGuess.orgY + 300;
 
@@ -80,12 +81,12 @@ export class EndScreenContainer extends PIXI.Container {
             .to(this.yourGuess.scale, {x:1, y:1, duration:0.3, ease:'back.out(1)'})
         gsap.timeline()
             .to(this.yourGuess, {y:this.yourGuess.orgY, duration:0.3, ease:'back.out(1)'})
-            .set(this.yourGuess.style, {fontWeight:700, fill:dataProvider.data.colorDark, delay:0.1})
+            .set(this.yourGuess.style, {fontWeight:700, fill:design.colors.DARK, delay:0.1})
             .to(this.yourGuess.style, {fontSize:340, duration:0.2, ease:'expo'});
         gsap.set(this.yourGuess.style, {letterSpacing:100})
         gsap.to(this.yourGuess.style, {letterSpacing:0, duration:0.3, ease:'back.out(1)', delay:0.1})
 
-        this.subText.filters = [dataProvider.colorMatrixFilterEmph[0]];
+        this.subText.filters = [design.filters.emph[0]];
         this.subText.scale.set(1.5, 0.3);
             
         gsap.delayedCall(0.4, ()=>{
@@ -97,15 +98,15 @@ export class EndScreenContainer extends PIXI.Container {
         let fxInterval = 0.05;
         gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
             this.subText.alpha = 1;
-            this.subText.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.subText.filters = [design.filters.emph[1]];
             this.subText.scale.set(1.2, 0.7);
         });
         gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
-            this.subText.filters = [dataProvider.colorMatrixFilterBase[0]];
+            this.subText.filters = [design.filters.light];
             this.subText.scale.set(0.8, 1.2);
         });
         gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
-            this.subText.filters = [dataProvider.colorMatrixFilterBase[1]];
+            this.subText.filters = [design.filters.light];
             gsap.to(this.subText.scale, {x:1, y:1, duration:0.1, ease:'back.out(1)'})
             this.initBtn();
         });
@@ -145,7 +146,7 @@ export class EndScreenContainer extends PIXI.Container {
 
     drawLine(isBG){
         let line = new PIXI.Graphics();
-        line.lineStyle(isBG ? Math.random()*20 : Math.random()*1+1, Math.random()>0.5 ? dataProvider.data.colorEmph1 : 0xFFFFFF);
+        line.lineStyle(isBG ? Math.random()*20 : Math.random()*1+1, Math.random()>0.5 ? design.colors.EMPH1 : 0xFFFFFF);
         // line.lineStyle(Math.random()*(isBG ? 20 : 2), Math.random()>0.5 ? dataProvider.data.colorEmph1 : 0xFFFFFF);
         line.moveTo(0, 0);
         line.lineTo((500+Math.random()*100)*Math.random()*2, 0);
@@ -159,11 +160,11 @@ export class EndScreenContainer extends PIXI.Container {
         ゲームーオーバー時
     ------------------------------------------------------------ */
     initGameOver(){
-        this.gameText = this.addChild(new PIXI.Text('GAME', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 0})));
+        this.gameText = this.addChild(new PIXI.Text('GAME', Utils.cloneTextStyle(design.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 0})));
         this.gameText.anchor.set(0.5);
         this.gameText.orgY = 0 - dataProvider.wHeight/5.1;
         this.gameText.y = this.gameText.orgY;
-        this.overText = this.addChild(new PIXI.Text('OVER', Utils.cloneTextStyle(dataProvider.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 25})));
+        this.overText = this.addChild(new PIXI.Text('OVER', Utils.cloneTextStyle(design.baseStyle, {align:'center', fontSize: 340, fontWeight: 700, letterSpacing: 25})));
         this.overText.anchor.set(0.5);
         this.overText.y = this.gameText.orgY + 300;
 
@@ -187,8 +188,8 @@ export class EndScreenContainer extends PIXI.Container {
                 gsap.set(this.gameText, {x:-10})
                 gsap.timeline({repeat:-1, repeatDelay:1.4})
                     .set(this.gameText, {alpha:0.5})
-                    .set(this.gameText.style, {fill:dataProvider.data.colorEmph2})
-                    .set(this.gameText.style, {fill:dataProvider.data.colorDark, delay:0.05})
+                    .set(this.gameText.style, {fill:design.colors.EMPH2})
+                    .set(this.gameText.style, {fill:design.colors.DARK, delay:0.05})
                     .to(this.gameText, {alpha:1, duration:2, ease:'bounce'})
             })
 
@@ -201,8 +202,8 @@ export class EndScreenContainer extends PIXI.Container {
                     gsap.set(this.overText, {x:-10})
                     gsap.timeline({repeat:-1, repeatDelay:1.4})
                         .set(this.overText, {alpha:0.5})
-                        .set(this.overText.style, {fill:dataProvider.data.colorEmph2})
-                        .set(this.overText.style, {fill:dataProvider.data.colorDark, delay:0.05})
+                        .set(this.overText.style, {fill:design.colors.EMPH2})
+                        .set(this.overText.style, {fill:design.colors.DARK, delay:0.05})
                         .to(this.overText, {alpha:1, duration:2, ease:'bounce'})
                 })
 
@@ -227,11 +228,11 @@ export class EndScreenContainer extends PIXI.Container {
         this.startBtn.addChild(this.circleFill);
 
         this.circleLine = GraphicsHelper.exDrawCircle(0, 0, radius, {width:4});
-        this.circleLine.tint = dataProvider.data.colorDark;
+        this.circleLine.tint = design.colors.DARK;
         this.startBtn.addChild(this.circleLine);
 
-        this.btnLabel = new PIXI.Text('↓', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 180, fontWeight:200}));
-        this.btnLabel.tint = dataProvider.data.colorDark;
+        this.btnLabel = new PIXI.Text('↓', Utils.cloneTextStyle(design.baseStyle, {fontSize: 180, fontWeight:200}));
+        this.btnLabel.tint = design.colors.DARK;
         this.btnLabel.anchor.set(0.5);
         this.startBtn.addChild(this.btnLabel);
 
@@ -247,7 +248,7 @@ export class EndScreenContainer extends PIXI.Container {
         gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.4, ease:'back.out(3)'});
         //
         this.circleFill.visible = true;
-        this.circleFill.tint = dataProvider.data.colorDark;
+        this.circleFill.tint = design.colors.DARK;
         this.circleFill.alpha = 1;
         this.circleFill.scale.set(0.1);
         gsap.timeline()
@@ -255,7 +256,7 @@ export class EndScreenContainer extends PIXI.Container {
         gsap.timeline()
             .to(this.circleFill, {alpha:0, duration:0.1, ease:'none', delay:0.2})
             .call(()=>{
-                this.circleFill.tint = dataProvider.data.colorLight;
+                this.circleFill.tint = design.colors.LIGHT;
             });
 
         this.btnLabel.alpha = 0;
@@ -273,10 +274,10 @@ export class EndScreenContainer extends PIXI.Container {
     ------------------------------------------------------------ */
     outro(){
         let scaleDest = 10;
-        this.circleFill.tint = dataProvider.data.colorDark;
+        this.circleFill.tint = design.colors.DARK;
         this.circleFill.visible = true;
         this.circleFill.alpha = 1;
-        this.btnLabel.tint = dataProvider.data.colorLight;
+        this.btnLabel.tint = design.colors.LIGHT;
         gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
         gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')
             .call(() =>{

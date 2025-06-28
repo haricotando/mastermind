@@ -1,8 +1,8 @@
 import { Attempt } from './Attempt.js';
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class AttemptContainer extends PIXI.Container {
     /* ============================================================
@@ -68,7 +68,7 @@ export class AttemptContainer extends PIXI.Container {
         Attempt
     ------------------------------------------------------------ */
     addAttempt(guess, result, flag){
-        let attempt = this['attempt' + (dataProvider.data.currentAttempt-1)];
+        let attempt = this['attempt' + (this.gameState.currentAttempt-1)];
         attempt.add(guess, result, flag);
         
 

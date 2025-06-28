@@ -1,5 +1,5 @@
-import { dataProvider } from './dataProvider.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
+
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
 
 export class LandscapeView extends PIXI.Container {
     /* ============================================================
@@ -16,7 +16,7 @@ export class LandscapeView extends PIXI.Container {
         const style = new PIXI.TextStyle({
             fontFamily: 'Material Icons',
             fontSize: 150,
-            fill: dataProvider.data.colorLight,
+            fill: design.colors.LIGHT,
             align:'center'
         });
         

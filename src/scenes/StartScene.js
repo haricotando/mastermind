@@ -1,7 +1,7 @@
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+import { design } from '../constants/design.js';
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class StartScreen extends PIXI.Container {
     /* ============================================================
@@ -26,20 +26,20 @@ export class StartScreen extends PIXI.Container {
         this.introContainer = this.addChild(new PIXI.Container());
 
         // ===== M =====
-        this.titleM = this.introContainer.addChild(new PIXI.Text('M', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 110})));
+        this.titleM = this.introContainer.addChild(new PIXI.Text('M', Utils.cloneTextStyle(design.baseStyle, {fontSize: 110})));
         this.titleM.anchor.set(0.5);
         
         // ===== MM =====
         this.titleMM = this.introContainer.addChild(new PIXI.Container());
         let mmHolder = this.titleMM.addChild(new PIXI.Container());
-        let m1 = mmHolder.addChild(new PIXI.Text('M', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 110, fontWeight: 200})));
-        let m2 = mmHolder.addChild(new PIXI.Text('M', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 110})));
+        let m1 = mmHolder.addChild(new PIXI.Text('M', Utils.cloneTextStyle(design.baseStyle, {fontSize: 110, fontWeight: 200})));
+        let m2 = mmHolder.addChild(new PIXI.Text('M', Utils.cloneTextStyle(design.baseStyle, {fontSize: 110})));
         m2.y += m1.height;
         Utils.pivotCenter(mmHolder);
         
         // ===== MASTERMIND 縦 =====
         this.titleMastermindV = this.introContainer.addChild(new PIXI.Container());
-        this.masterV = new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontWeight:200, align: 'center', breakWords: true, wordWrap: true, wordWrapWidth:100, leading:5}))
+        this.masterV = new PIXI.Text('MASTER', Utils.cloneTextStyle(design.baseStyle, {fontWeight:200, align: 'center', breakWords: true, wordWrap: true, wordWrapWidth:100, leading:5}))
         this.titleMastermindV.addChild(this.masterV);
         this.mindV = new PIXI.Text('MIND', Utils.cloneTextStyle(this.masterV.style, {fontWeight: 100}));
         this.titleMastermindV.addChild(this.mindV);
@@ -47,13 +47,13 @@ export class StartScreen extends PIXI.Container {
         Utils.pivotCenter(this.titleMastermindV);
 
         // ===== MASTERMIND V MASK =====
-        this.mmVMask = this.introContainer.addChild(GraphicsHelper.exDrawRect(0, 0, 415*2, 1400, false, {color:dataProvider.data.colorDark}));
+        this.mmVMask = this.introContainer.addChild(GraphicsHelper.exDrawRect(0, 0, 415*2, 1400, false, {color:design.colors.DARK}));
         Utils.pivotCenter(this.mmVMask);
         this.mmVMask.visible = false;
 
         // ===== Line left =====
         this.lineLeft = this.introContainer.addChild(new PIXI.Graphics());
-        this.lineLeft.lineStyle(2, dataProvider.data.colorLight);
+        this.lineLeft.lineStyle(2, design.colors.LIGHT);
         this.lineLeft.moveTo(0, 0);
         this.lineLeft.lineTo(0, this.titleMastermindV.height*1.05);
         Utils.pivotY(this.lineLeft);
@@ -64,7 +64,7 @@ export class StartScreen extends PIXI.Container {
         
         // ===== Line right =====
         this.lineRight = this.introContainer.addChild(new PIXI.Graphics());
-        this.lineRight.lineStyle(2, dataProvider.data.colorLight);
+        this.lineRight.lineStyle(2, design.colors.LIGHT);
         this.lineRight.moveTo(0, 0);
         this.lineRight.lineTo(0, this.titleMastermindV.height*1.05);
         Utils.pivotY(this.lineRight);
@@ -75,14 +75,14 @@ export class StartScreen extends PIXI.Container {
 
         // ===== MASTER MIND =====
         this.titlesContainer = this.introContainer.addChild(new PIXI.Container());
-        this.titleMaster = this.titlesContainer.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 105, fontWeight: 200})));
+        this.titleMaster = this.titlesContainer.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(design.baseStyle, {fontSize: 105, fontWeight: 200})));
         this.titleMaster.anchor.x = 0.5;
-        this.titleMind = this.titlesContainer.addChild(new PIXI.Text('MIND', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 105, letterSpacing: 48})));
+        this.titleMind = this.titlesContainer.addChild(new PIXI.Text('MIND', Utils.cloneTextStyle(design.baseStyle, {fontSize: 105, letterSpacing: 48})));
         this.titleMind.anchor.x = 0.5;
         this.titleMind.y = 135;
         
         // ===== descripton =====        
-        const desc1 = this.titlesContainer.addChild(new PIXI.Text('Guess the 4-digit secret code.', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 41, fontWeight: 300, letterSpacing: 2.5})));
+        const desc1 = this.titlesContainer.addChild(new PIXI.Text('Guess the 4-digit secret code.', Utils.cloneTextStyle(design.baseStyle, {fontSize: 41, fontWeight: 300, letterSpacing: 2.5})));
         desc1.anchor.x = 0.5;
         desc1.y = 300;
         const desc2 = this.titlesContainer.addChild(new PIXI.Text('no duplicates.', Utils.cloneTextStyle(desc1.style)));
@@ -91,7 +91,7 @@ export class StartScreen extends PIXI.Container {
 
         // ===== instruction =====
         const inst1Holder = this.titlesContainer.addChild(new PIXI.Container());
-        const inst1Left = inst1Holder.addChild(new PIXI.Text('Hit', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 36, fontWeight: 700, letterSpacing: 2})));
+        const inst1Left = inst1Holder.addChild(new PIXI.Text('Hit', Utils.cloneTextStyle(design.baseStyle, {fontSize: 36, fontWeight: 700, letterSpacing: 2})));
         const inst1Right = inst1Holder.addChild(new PIXI.Text('means right digit, right place.', Utils.cloneTextStyle(inst1Left.style, {fontWeight: 300})));
         inst1Right.x = inst1Left.width + 15;
         Utils.pivotX(inst1Holder);
@@ -125,20 +125,20 @@ export class StartScreen extends PIXI.Container {
         this.startBtn = new PIXI.Sprite();
         this.addChild(this.startBtn);
 
-        this.startBtn.y = dataProvider.wHeight/4;
+        this.startBtn.y = window.innerHeight/4;
         
         // ===== Circle =====
         let radius = 165;
         
-        this.circleFill = GraphicsHelper.exDrawCircle(0, 0, radius, false, {color:dataProvider.data.colorLight, alpha:1});
+        this.circleFill = GraphicsHelper.exDrawCircle(0, 0, radius, false, {color:design.colors.LIGHT, alpha:1});
         this.circleFill.alpha = 0;
         this.startBtn.addChild(this.circleFill);
 
-        this.circleLine = GraphicsHelper.exDrawCircle(0, 0, radius, {width:2, color:dataProvider.data.colorLight, alpha:1});
+        this.circleLine = GraphicsHelper.exDrawCircle(0, 0, radius, {width:2, color:design.colors.LIGHT, alpha:1});
         this.startBtn.addChild(this.circleLine);
         
         // ===== Label =====
-        this.btnLabel = new PIXI.Text('↓', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 180, fontWeight: 200}));
+        this.btnLabel = new PIXI.Text('↓', Utils.cloneTextStyle(design.baseStyle, {fontSize: 180, fontWeight: 200}));
         this.btnLabel.anchor.set(0.5);
         this.startBtn.addChild(this.btnLabel);
 
@@ -167,19 +167,19 @@ export class StartScreen extends PIXI.Container {
             .to(this.titleM, {alpha:0, duration:0.5})
             .to(this.titleM, {alpha:1, duration:0.1, repeat:1})
             .call(()=>{
-                this.titleM.filters = [dataProvider.colorMatrixFilterEmph[0]];
+                this.titleM.filters = [design.filters.emph[0]];
                 
             })
             .to(this.titleM, {alpha:0, duration:0.1, delay:0})
             .call(()=>{
-                this.titleMM.filters = [dataProvider.colorMatrixFilterEmph[1]];
+                this.titleMM.filters = [design.filters.emph[1]];
             })
             .to(this.titleMM, {alpha:1, duration:0.05})
             .call(()=>{
-                this.titleMM.filters = [dataProvider.colorMatrixFilterEmph[0]];
+                this.titleMM.filters = [design.filters.emph[0]];
                 this.titleMM.scale.x = 0.5;
                 this.titleMM.scale.y = 8;
-                this.titleMastermindV.filters = [dataProvider.colorMatrixFilterEmph[2]];
+                this.titleMastermindV.filters = [design.filters.emph[2]];
                 this.titleMastermindV.scale.y = 1.2;
             })
             .to(this.titleMM, {alpha:0, duration:0.1})
@@ -204,7 +204,7 @@ export class StartScreen extends PIXI.Container {
 
         this.lineLeft.alpha = 0;
         this.lineLeft.visible = true;
-        this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[0]];
+        this.lineLeft.filters = [design.filters.emph[0]];
         gsap.to(this.lineLeft, {alpha:1, duration:1});
         gsap.to(this.lineLeft, {y:linePosY, duration:openingDuration, ease:'power3.inOut'});
         gsap.to(this.lineLeft, {x:0-linePosX, duration:openingDuration, ease:'power3.inOut'});
@@ -213,7 +213,7 @@ export class StartScreen extends PIXI.Container {
         this.lineRight.alpha = 0;
         this.lineRight.visible = true;
         gsap.to(this.lineRight, {alpha:1, duration:1});
-        this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[0]];
+        this.lineRight.filters = [design.filters.emph[0]];
         gsap.to(this.lineRight, {y:linePosY, duration:openingDuration, ease:'power3.inOut'});
         gsap.to(this.lineRight, {x:linePosX, duration:openingDuration, ease:'power3.inOut'});
         gsap.to(this.lineRight, {height:lineHeight, duration:openingDuration, ease:'power3.inOut'});
@@ -231,15 +231,15 @@ export class StartScreen extends PIXI.Container {
         let fxDelay = 0.3;
         let fxInterval = 0.1;
         gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
-            this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[1]];
-            this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[1]];
-            this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[1]];
+            this.titlesContainer.filters = [design.filters.emph[1]];
+            this.lineLeft.filters = [design.filters.emph[1]];
+            this.lineRight.filters = [design.filters.emph[1]];
             this.introC();
         });
         gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
-            this.titlesContainer.filters = [dataProvider.colorMatrixFilterEmph[0]];
-            this.lineLeft.filters = [dataProvider.colorMatrixFilterEmph[0]];
-            this.lineRight.filters = [dataProvider.colorMatrixFilterEmph[0]];
+            this.titlesContainer.filters = [design.filters.emph[0]];
+            this.lineLeft.filters = [design.filters.emph[0]];
+            this.lineRight.filters = [design.filters.emph[0]];
         });
         gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
             this.titlesContainer.filters = false;
@@ -250,7 +250,7 @@ export class StartScreen extends PIXI.Container {
         gsap.timeline().to(this.titlesContainer.scale, {x:1, y:1, duration:openingDuration, ease:'power3.out'})
             .call(() =>{
             });
-        gsap.to(this.introContainer, {y:this.introContainer.y-dataProvider.wHeight/10, duration:0.6, ease:'power1.inOut'})
+        gsap.to(this.introContainer, {y:this.introContainer.y-window.innerHeight/10, duration:0.6, ease:'power1.inOut'})
     }
 
     introC(){
@@ -265,7 +265,7 @@ export class StartScreen extends PIXI.Container {
         gsap.to(this.circleLine.scale, {x:1, y:1, duration:0.4, ease:'back.out(3)'});
         //
         this.circleFill.visible = true;
-        this.circleFill.tint = dataProvider.data.colorEmph1;
+        this.circleFill.tint = design.colors.EMPH1;
         this.circleFill.alpha = 1;
         this.circleFill.scale.set(0.1);
         gsap.timeline()
@@ -273,11 +273,11 @@ export class StartScreen extends PIXI.Container {
         gsap.timeline()
             .to(this.circleFill, {alpha:0, duration:0.1, ease:'none', delay:0.2})
             .call(()=>{
-                this.circleFill.tint = dataProvider.data.colorLight;
-                this.circleLine.tint = dataProvider.data.colorEmph2;
+                this.circleFill.tint = design.colors.LIGHT;
+                this.circleLine.tint = design.colors.EMPH2;
             })
             .call(()=>{
-                this.circleLine.tint = dataProvider.data.colorLight;
+                this.circleLine.tint = design.colors.LIGHT;
                 this.startBtn.interactive = true;
             }, null, 0.5);
 
@@ -298,7 +298,7 @@ export class StartScreen extends PIXI.Container {
         this.circleFill.alpha = 1;
         let scaleDest = 10;
 
-        this.btnLabel.style.fill = dataProvider.data.colorDark;
+        this.btnLabel.style.fill = design.colors.DARK;
         gsap.set(this.btnLabel, {alpha:1})
         gsap.timeline().to(this.circleLine.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'})
         gsap.timeline().to(this.circleFill.scale, {x:scaleDest, y:scaleDest, duration:0.3, ease:'power1.in'}, '+=0.05')
@@ -306,7 +306,7 @@ export class StartScreen extends PIXI.Container {
                 this.titlesContainer.visible = false;
                 this.lineLeft.visible = false;
                 this.lineRight.visible = false;
-                this.parent.afterIntro();
+                this.emit('start-game');
             })
             .to(this.circleFill, {y:0-this.circleFill.height*10, duration:0.3})
             .call(() =>{
@@ -322,8 +322,8 @@ export class StartScreen extends PIXI.Container {
         gsap.timeline().to(this.titlesContainer, {alpha:0.7, duration:0.8});
 
         gsap.timeline({delay:0})
-        .set(this.titlesContainer, {filters:[dataProvider.colorMatrixFilterEmph[2]]})
-        .set(this.titlesContainer, {filters:[dataProvider.colorMatrixFilterEmph[1]], delay:0.1})
+        .set(this.titlesContainer, {filters:[design.filters.emph[2]]})
+        .set(this.titlesContainer, {filters:[design.filters.emph[1]], delay:0.1})
         .set(this.titlesContainer, {filters:false, delay:0.1})
 
 
@@ -341,6 +341,6 @@ export class StartScreen extends PIXI.Container {
     }
 
     suicide(){
-        this.parent.removeChild(this);
+        this.destroy();
     }
 }

@@ -1,6 +1,6 @@
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import { dataProvider } from './dataProvider.js';
-import Utils from './helper/Utils.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+
+import Utils from '../utils/helper/Utils.js';
 
 export class KeyPad extends PIXI.Container {
     /* ============================================================
@@ -72,7 +72,7 @@ export class KeyPad extends PIXI.Container {
         this.circleLine.filters = false;
 
         gsap.set(this.circleFill.scale, {x:1, y:1});
-        gsap.set(this.circleFill, {pixi:{tint:dataProvider.data.colorDark}, duration:0.1});
+        gsap.set(this.circleFill, {pixi:{tint:design.colors.DARK}, duration:0.1});
         this.circleFill.filters = false;
 
     }

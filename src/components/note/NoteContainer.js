@@ -1,6 +1,6 @@
-import { dataProvider } from '../dataProvider.js';
-import GraphicsHelper from '../helper/GraphicsHelper.js';
-import Utils from '../helper/Utils.js';
+
+import GraphicsHelper from '../../utils/helper/GraphicsHelper.js';
+import Utils from '../../utils/helper/Utils.js';
 import { NoteBuffer } from './NoteBuffer.js';
 import { NoteNumber } from './NoteNumber.js';
 
@@ -80,7 +80,7 @@ export class NoteContainer extends PIXI.Container {
         this.container.visible = true;
         gsap.timeline()
             .set(this.container, {y:this.container.orgY + this.container.height})
-            .to(this.container, {y:this.container.orgY + (dataProvider.data.standalone ? dataProvider.data.standaloneFooterOffset : 0), duration:0.3, ease:'back.out(1)'})
+            .to(this.container, {y:this.container.orgY + (navigator.standalone ? LAYOUT.STANDALONE_FOOTER_OFFSET : 0), duration:0.3, ease:'back.out(1)'})
             
     }
 

@@ -1,14 +1,15 @@
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+import { design } from '../constants/design.js';
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class HeaderContainer extends PIXI.Container {
     /* ============================================================
         constructor
     ============================================================ */
-    constructor() {
+    constructor(gameState) {
         super();
+        this.gameState = gameState;
         
         this.initTitle();
         this.intro();
@@ -27,20 +28,20 @@ export class HeaderContainer extends PIXI.Container {
     }
 
     initTitle(){
-        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, dataProvider.wWidth, dataProvider.data.headerOffset, false, {color:dataProvider.data.colorDark}));
+        this.bg = this.addChild(GraphicsHelper.exDrawRect(0, 0, window.innerWidth, 285, false, {color:design.colors.DARK}));
         this.bg.pivot.x = this.bg.width/2;
         this.bg.visible = false;
         
         // ===== title =====
         this.mmHolder = this.addChild(new PIXI.Container());
-        this.master = this.mmHolder.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 65, fontWeight: 400, letterSpacing: 15})));
+        this.master = this.mmHolder.addChild(new PIXI.Text('MASTER', Utils.cloneTextStyle(design.baseStyle, {fontSize: 65, fontWeight: 400, letterSpacing: 15})));
         this.mind = this.mmHolder.addChild(new PIXI.Text('MIND', Utils.cloneTextStyle(this.master.style, {fontWeight: 200})));
         this.mind.x = this.master.width + 15;
         Utils.pivotCenter(this.mmHolder);
         this.mmHolder.alpha = 0;
         
         // ===== attempt =====
-        this.attempt = this.addChild(new PIXI.Text('ATTEMPT: 0/10', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 37, fontWeight: 400, letterSpacing: 5})));
+        this.attempt = this.addChild(new PIXI.Text('ATTEMPT: 0/10', Utils.cloneTextStyle(design.baseStyle, {fontSize: 37, fontWeight: 400, letterSpacing: 5})));
         this.attempt.anchor.set(0.5);
         this.attempt.y = 168
         this.attempt.alpha = 0;
@@ -66,36 +67,36 @@ export class HeaderContainer extends PIXI.Container {
 
         if(isHardMode){
             gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
-                this.attempt.text = 'ATTEMPT: ' + dataProvider.data.currentAttempt + '/' + dataProvider.data.attemptMax;
-                this.attempt.style.fill = dataProvider.data.colorEmph3;
+                this.attempt.text = `ATTEMPT: ${this.gameState.currentAttempt}/${this.gameState.attemptMax}`;
+                this.attempt.style.fill = design.colors.EMPH3;
                 this.attempt.scale.set(4.2, 0.8)
             });
             gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
-                this.attempt.style.fill = dataProvider.data.colorEmph2;
+                this.attempt.style.fill = design.colors.EMPH2;
                 this.attempt.scale.set(0.9, 4.2)
             });
             gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
-                this.attempt.style.fill = dataProvider.data.colorEmph3;
+                this.attempt.style.fill = design.colors.EMPH3;
                 this.attempt.scale.set(1.5, 1.5)
             });
             gsap.delayedCall(fxDelay + fxInterval * 4, ()=>{
-                this.attempt.style.fill = dataProvider.data.colorLight;
+                this.attempt.style.fill = design.colors.LIGHT;
                 gsap.to(this.attempt.scale, {x:1, y:1, duration:0.4, ease:'expo'})
             });
         }else{
 
             gsap.delayedCall(fxDelay + fxInterval * 1, ()=>{
-                this.attempt.text = 'ATTEMPT: ' + dataProvider.data.currentAttempt + '/' + dataProvider.data.attemptMax;
-                this.attempt.style.fill = dataProvider.data.currentAttempt > 5 ? dataProvider.data.colorEmph3 : dataProvider.data.colorEmph1;
+                this.attempt.text = `ATTEMPT: ${this.gameState.currentAttempt}/${this.gameState.attemptMax}`;
+                this.attempt.style.fill = this.gameState.currentAttempt > 5 ? design.colors.EMPH3 : design.colors.EMPH1;
                 this.attempt.scale.set(1.2, 0.8)
             });
             gsap.delayedCall(fxDelay + fxInterval * 2, ()=>{
-                this.attempt.style.fill = dataProvider.data.colorEmph2;
+                this.attempt.style.fill = design.colors.EMPH2;
                 this.attempt.scale.set(0.9, 1.2)
             });
             gsap.delayedCall(fxDelay + fxInterval * 3, ()=>{
-                this.attempt.style.fill = dataProvider.data.currentAttempt == dataProvider.data.attemptMax ? dataProvider.data.colorEmph3 :
-                dataProvider.data.currentAttempt > dataProvider.data.attemptMax-3 && dataProvider.data.currentAttempt<dataProvider.data.attemptMax ? dataProvider.data.colorEmph2 : dataProvider.data.colorLight;
+                this.attempt.style.fill = this.gameState.currentAttempt == this.gameState.attemptMax ? design.colors.EMPH3 :
+                this.gameState.currentAttempt > this.gameState.attemptMax-3 && this.gameState.currentAttempt<this.gameState.attemptMax ? design.colors.EMPH2 : design.colors.LIGHT;
                 gsap.to(this.attempt.scale, {x:1, y:1, duration:0.3, ease:'expo'})
             });
         }
@@ -107,7 +108,7 @@ export class HeaderContainer extends PIXI.Container {
         dataProvider.data.hardMode++;
 
         if(!this.hardLabel){
-            this.hardLabel = this.addChild(new PIXI.Text('', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 45, fontWeight: 700, letterSpacing: 5, fill:dataProvider.data.colorEmph3})));
+            this.hardLabel = this.addChild(new PIXI.Text('', Utils.cloneTextStyle(design.baseStyle, {fontSize: 45, fontWeight: 700, letterSpacing: 5, fill:dataProvider.data.colorEmph3})));
             // this.hardLabel.anchor.y = 0.5;
             // this.hardLabel.x = -60;
             this.hardLabel.anchor.set(0.5);

@@ -1,6 +1,6 @@
-import { dataProvider } from '../dataProvider.js';
-import GraphicsHelper from '../helper/GraphicsHelper.js';
-import Utils from '../helper/Utils.js';
+
+import GraphicsHelper from '../../utils/helper/GraphicsHelper.js';
+import Utils from '../../utils/helper/Utils.js';
 
 
 export class NoteNumber extends PIXI.Container {
@@ -22,7 +22,7 @@ export class NoteNumber extends PIXI.Container {
         const style = new PIXI.TextStyle({
             fontFamily: 'Material Icons',
             fontSize: 120,
-            fill: dataProvider.data.colorEmph3,
+            fill: design.colors.EMPH3,
             });        
 
         this.xMark = new PIXI.Text('', style);

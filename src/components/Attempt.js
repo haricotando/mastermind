@@ -1,7 +1,7 @@
-import { dataProvider } from './dataProvider.js';
-import AlignHelper from './helper/AlignHelper.js';
-import GraphicsHelper from './helper/GraphicsHelper.js';
-import Utils from './helper/Utils.js';
+
+import AlignHelper from '../utils/helper/AlignHelper.js';
+import GraphicsHelper from '../utils/helper/GraphicsHelper.js';
+import Utils from '../utils/helper/Utils.js';
 
 export class Attempt extends PIXI.Sprite {
     /* ============================================================
@@ -14,7 +14,7 @@ export class Attempt extends PIXI.Sprite {
         // ===== box =====
         this.box = GraphicsHelper.exDrawRect(0, 0, 400, 100, false, true);
         this.addChild(this.box);
-        this.box.tint = 0x333333;
+        this.box.tint = design.colors.EMPH3;
         Utils.pivotCenter(this.box);
 
         this.label = this.addChild(new PIXI.Text('', Utils.cloneTextStyle(dataProvider.baseStyle, {fontSize: 55, fontWeight: 300, fill:dataProvider.data.colorLight})));
@@ -70,7 +70,7 @@ export class Attempt extends PIXI.Sprite {
 
     deactivate(){
         gsap.timeline()
-            .set(this.box, {pixi:{tint:dataProvider.data.colorEmph3, alpha:0}})
+            .set(this.box, {pixi:{tint:COLORS.EMPH3, alpha:0}})
             .to(this.box, {alpha:0.4, duration:0.1, repeat:1})
             .to(this.box.scale, {x:4, y:0.01, duration:Math.random()*1/5+0.1, ease:'power1.inOut'})
             .set(this.box, {visible:false})
